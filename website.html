@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandu &mdash; Intelligent Computational Archaeological Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+Cuneiform&family=Noto+Sans+Old+Persian&family=Noto+Sans+Brahmi&family=Noto+Sans+Phoenician&family=Noto+Sans+Old+Italic&family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070707;
+    --bg-raise:#0a0a0a;
+    --panel:#0d0d0d;
+    --panel-soft:#0f0f0f;
+    --border:#1a1a1a;
+    --border-soft:#141414;
+    --rust:#bb4400;
+    --rust-dim:#7a3a1a;
+    --cyan:#00a8c0;
+    --cyan-dim:#0b3a42;
+    --moss:#3a8a4a;
+    --moss-dim:#173a1f;
+    --violet:#a855c9;
+    --violet-dim:#3a1a45;
+    --text:#e4e4e4;
+    --text-soft:#9a9a9a;
+    --text-mute:#565656;
+    --danger:#c94a4a;
+    --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Spectral',serif;
+    font-weight:600;
+    color:#f3f3f3;
+    margin:0 0 .5em 0;
+    letter-spacing:.2px;
+  }
+  a{color:inherit;text-decoration:none;}
+  p{color:var(--text-soft);}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--text-mute);
+    font-weight:700;
+    display:block;
+    margin-bottom:12px;
+  }
+  .eyebrow.rust{color:var(--rust);}
+  .eyebrow.cyan{color:var(--cyan);}
+  .eyebrow.moss{color:var(--moss);}
+  .eyebrow.violet{color:var(--violet);}
+
+  ::selection{background:var(--rust-dim);color:#fff;}
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
+
+  .wrap{max-width:1160px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  header.topnav{
+    position:sticky;top:0;z-index:100;
+    background:rgba(7,7,7,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:1160px;margin:0 auto;padding:0 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    height:64px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
+  .brand .mark{
+    width:30px;height:30px;border-radius:6px;
+    border:1px solid var(--rust);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Spectral',serif;font-weight:700;color:var(--rust);font-size:15px;
+    background:#120a06;
+  }
+  .brand .name{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:2px;font-size:14px;color:#eee;}
+  nav.tabs{display:flex;gap:2px;}
+  nav.tabs button{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:1px;
+    background:transparent;border:1px solid transparent;
+    color:var(--text-soft);padding:8px 13px;border-radius:4px;
+    cursor:pointer;transition:.15s;
+  }
+  nav.tabs button:hover{background:var(--bg-raise);color:#ddd;border-color:var(--border);}
+  nav.tabs button.active{border-color:var(--rust);color:var(--rust);background:#140a05;}
+  .nav-toggle{display:none;background:none;border:1px solid var(--border);color:#ccc;border-radius:4px;padding:6px 10px;font-size:16px;cursor:pointer;}
+
+  @media (max-width:920px){
+    nav.tabs{position:fixed;top:64px;left:0;right:0;background:#0a0a0a;border-bottom:1px solid var(--border);
+      flex-direction:column;padding:8px;display:none;gap:4px;}
+    nav.tabs.open{display:flex;}
+    nav.tabs button{text-align:left;}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- VIEWS ---------- */
+  .view{display:none;animation:fade .35s ease;}
+  .view.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  section{padding:90px 0;border-bottom:1px solid var(--border-soft);}
+  section.tight{padding:70px 0;}
+  section:last-child{border-bottom:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:64px 0 40px 0;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;}
+  @media (max-width:920px){.hero-grid{grid-template-columns:1fr;}}
+  .hero h1{font-size:46px;line-height:1.12;font-weight:600;max-width:620px;position:relative;z-index:2;}
+  .hero h1 em{font-style:normal;color:var(--rust);}
+  .hero p.lede{font-size:16.5px;max-width:520px;margin-top:18px;position:relative;z-index:2;}
+  .hero-ctas{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;position:relative;z-index:2;}
+
+  .btn{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;
+    padding:12px 22px;border-radius:4px;cursor:pointer;font-weight:700;
+    border:1px solid var(--border);background:var(--panel);color:var(--text-soft);
+    transition:.15s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:hover{border-color:#333;color:#eee;}
+  .btn.primary{background:#140a05;border-color:var(--rust);color:var(--rust);}
+  .btn.primary:hover{background:#1c0d06;}
+  .btn.cyan{background:#061418;border-color:var(--cyan);color:var(--cyan);}
+  .btn.moss{background:#081b0d;border-color:var(--moss);color:var(--moss);}
+  .btn.violet{background:#14081a;border-color:var(--violet);color:var(--violet);}
+
+  /* glyph frieze &mdash; signature element */
+  .frieze{
+    position:relative;height:260px;border:1px solid var(--border);border-radius:8px;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(187,68,0,.06), transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(0,168,192,.06), transparent 60%),
+      #0a0a0a;
+    overflow:hidden;
+  }
+  
+  /* Background variation for the raw glyph stream placement */
+  .hero-frieze-bg {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:280px;
+    z-index:1;
+    opacity:0.35;
+    pointer-events:none;
+    overflow:hidden;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0));
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0));
+  }
+  
+  .frieze-row{
+    position:absolute;left:0;right:0;white-space:nowrap;
+    font-size:34px;letter-spacing:14px;opacity:.55;
+    color:#8a8a8a;
+  }
+  .frieze-row .marker{padding:0 .3em;}
+  .frieze-row .marker.hi{color:var(--cyan);opacity:1;text-shadow:0 0 18px rgba(0,168,192,.35);}
+  .frieze-row.r1{top:26px;font-family:'Noto Sans Cuneiform',sans-serif;animation:driftL 42s linear infinite;}
+  .frieze-row.r2{top:104px;font-family:'Noto Sans Brahmi',sans-serif;font-size:30px;animation:driftR 55s linear infinite;color:#767676;}
+  .frieze-row.r3{top:182px;font-family:'Noto Sans Phoenician',sans-serif;animation:driftL 60s linear infinite;color:#6f6f6f;}
+  @keyframes driftL{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes driftR{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+  .frieze-caption{
+    position:absolute;bottom:10px;left:14px;right:14px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;
+    color:var(--text-mute);display:flex;justify-content:space-between;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .frieze-row{animation:none !important;}
+  }
+
+  /* ---------- CARD PRIMITIVE (mirrors the app's card look) ---------- */
+  .card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px 24px;
+  }
+  .card.rust{border-color:var(--rust-dim);}
+  .card.cyan{border-color:var(--cyan-dim);}
+  .card.moss{border-color:var(--moss-dim);}
+  .card.violet{border-color:var(--violet-dim);}
+
+  .section-head{max-width:640px;margin-bottom:44px;}
+  .section-head h2{font-size:30px;}
+
+  /* ---------- WHY / THEME GRID ---------- */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:820px){.grid-3,.grid-2{grid-template-columns:1fr;}}
+  .feat h3{font-size:16px;margin-bottom:8px;}
+  .feat .icon{
+    width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-weight:700;margin-bottom:14px;font-size:14px;
+    border:1px solid var(--border);
+  }
+
+  /* ---------- MOCKUP PANEL (stylised UI echo, not a screenshot) ---------- */
+  .mockup{
+    border:1px solid var(--border);border-radius:8px;background:#090909;overflow:hidden;
+  }
+  .mockup-bar{
+    height:34px;background:#0d0d0d;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:8px;padding:0 14px;
+  }
+  .mockup-bar span.dot{width:8px;height:8px;border-radius:50%;background:#262626;}
+  .mockup-bar .tabs{display:flex;gap:6px;margin-left:14px;}
+  .mockup-bar .tabs div{
+    font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-mute);
+    border:1px solid var(--border-soft);padding:3px 8px;border-radius:3px;
+  }
+  .mockup-bar .tabs div.on{color:var(--rust);border-color:var(--rust-dim);}
+  .mockup-body{padding:18px;display:grid;grid-template-columns:1.2fr 1fr;gap:14px;}
+  @media (max-width:600px){.mockup-body{grid-template-columns:1fr;}}
+  .mockup-col{display:flex;flex-direction:column;gap:10px;}
+  .mockup-block{
+    border:1px solid var(--border);border-radius:5px;padding:10px 12px;background:var(--panel);
+  }
+  .mockup-block .lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-mute);letter-spacing:1.5px;margin-bottom:6px;display:block;}
+  .mockup-bar-chart{display:flex;flex-direction:column;gap:6px;}
+  .mockup-bar-chart .row{display:flex;align-items:center;gap:8px;}
+  .mockup-bar-chart .row .track{flex:1;height:9px;background:#161616;border-radius:3px;overflow:hidden;}
+  .mockup-bar-chart .row .fill{height:100%;border-radius:3px;}
+  .mockup-bar-chart .row .pct{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-soft);width:34px;text-align:right;}
+  .mockup-chat .bubble{border-radius:6px;padding:8px 10px;font-size:11px;max-width:80%;}
+  .mockup-chat .bubble.user{border:1px solid var(--rust-dim);background:#0a0a0a;color:#e2b795;margin-left:auto;}
+  .mockup-chat .bubble.ai{border:1px solid var(--cyan-dim);background:#040f10;color:#7fe6f2;font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- TIMELINE (progress) ---------- */
+  .timeline{position:relative;padding-left:26px;}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--border);}
+  .tl-item{position:relative;padding-bottom:34px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:"";position:absolute;left:-26px;top:4px;width:11px;height:11px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--rust);
+  }
+  .tl-item.done::before{border-color:var(--moss);background:var(--moss);}
+  .tl-item.next::before{border-color:var(--cyan);}
+  .tl-item .tl-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-mute);letter-spacing:1px;}
+  .tl-item h4{font-size:16px;margin:4px 0 6px;}
+
+  /* ---------- POTENTIAL / STAT STRIP ---------- */
+  .stat-strip{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .stat-strip .stat{flex:1;padding:22px 20px;border-right:1px solid var(--border);}
+  .stat-strip .stat:last-child{border-right:none;}
+  .stat-strip .stat .num{font-family:'Spectral',serif;font-size:28px;color:#eee;font-weight:600;}
+  .stat-strip .stat .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);letter-spacing:1px;margin-top:4px;}
+  @media (max-width:760px){.stat-strip{flex-direction:column;}.stat-strip .stat{border-right:none;border-bottom:1px solid var(--border);}}
+
+  /* ---------- FORMS ---------- */
+  form.panel-form{display:grid;gap:14px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:640px){.form-row{grid-template-columns:1fr;}}
+  label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--text-mute);display:block;margin-bottom:6px;}
+  label .required{color:var(--danger);margin-left:2px;}
+  input[type=text],input[type=email],input[type=file],select,textarea{
+    width:100%;background:var(--panel-soft);border:1px solid var(--border);border-radius:4px;
+    color:#ddd;padding:10px 12px;font-family:'Inter',sans-serif;font-size:13.5px;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rust);}
+  textarea{resize:vertical;min-height:90px;}
+  .field{display:flex;flex-direction:column;}
+  .form-note{font-size:11.5px;color:var(--text-mute);margin-top:-4px;}
+  .confirm-msg{
+    display:none;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--moss);
+    border:1px solid var(--moss-dim);background:#081b0d;padding:10px 14px;border-radius:4px;
+  }
+  .confirm-msg.show{display:block;}
+
+  /* ---------- RECOMMENDATIONS / DONATE LIST ---------- */
+  .rec-card{border:1px solid var(--border);border-radius:6px;padding:16px 18px;background:var(--panel);}
+  .rec-card .meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);letter-spacing:1px;margin-bottom:8px;display:flex;gap:10px;}
+  .tag{border:1px solid var(--border);border-radius:3px;padding:2px 7px;}
+  .tag.feature{color:var(--cyan);border-color:var(--cyan-dim);}
+  .tag.dataset{color:var(--moss);border-color:var(--moss-dim);}
+  .tag.collab{color:var(--violet);border-color:var(--violet-dim);}
+  .tag.other{color:var(--rust);border-color:var(--rust-dim);}
+  .rec-list{display:grid;gap:12px;margin-top:26px;}
+
+  .donate-types{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 32px;}
+  @media (max-width:820px){.donate-types{grid-template-columns:repeat(2,1fr);}}
+  .donate-types .dt{border:1px solid var(--border);border-radius:6px;padding:14px;text-align:center;}
+  .donate-types .dt .glyph{font-size:22px;color:var(--moss);margin-bottom:8px;font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- BLOG ---------- */
+  .post{border:1px solid var(--border);border-radius:8px;background:var(--panel);margin-bottom:20px;overflow:hidden;}
+  .post-head{padding:22px 24px 0;cursor:pointer;}
+  .post-head .meta{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-mute);letter-spacing:1px;display:flex;gap:14px;margin-bottom:10px;}
+  .post-head h3{font-size:20px;margin-bottom:8px;}
+  .post-excerpt{color:var(--text-soft);font-size:13.5px;}
+  .post-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 24px;}
+  .post.open .post-body{max-height:2400px;padding:6px 24px 24px;}
+  .post-toggle{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--rust);
+    padding:14px 24px 20px;display:inline-block;
+  }
+  .post-body p{margin:0 0 12px;}
+  .post-body h4{font-size:14px;color:#ddd;margin:18px 0 6px;}
+  .comments{border-top:1px solid var(--border-soft);margin-top:18px;padding-top:18px;}
+  .comments .eyebrow{margin-bottom:14px;}
+  .comment{border-left:2px solid var(--border);padding:2px 0 2px 14px;margin-bottom:14px;}
+  .comment .who{font-family:'JetBrains Mono',monospace;font-size:11px;color:#cfa980;}
+  .comment .when{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-mute);margin-left:8px;}
+  .comment p{margin:4px 0 0;font-size:13px;}
+  .comment-form{display:grid;gap:10px;margin-top:16px;}
+  .comment-form .form-row{grid-template-columns:1fr 1fr;}
+
+  .qa{display:grid;gap:16px;margin-top:30px;}
+  .qa .q{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--cyan);letter-spacing:.5px;margin-bottom:4px;}
+
+  /* ---------- CONTRIBUTORS ---------- */
+  .contributor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:26px;}
+  .contributor-card{border:1px solid var(--border);border-radius:6px;padding:18px;background:var(--panel);text-align:center;}
+  .contributor-card .avatar{width:56px;height:56px;border-radius:50%;border:2px solid var(--violet-dim);margin:0 auto 12px;background:var(--bg-raise);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--violet);}
+  .contributor-card h4{font-size:15px;margin-bottom:4px;}
+  .contributor-card p{font-size:12px;margin:0;color:var(--text-mute);}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--border);background:#050505;padding:60px 0 26px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr .8fr .8fr .8fr;gap:36px;}
+  @media (max-width:820px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  footer h4{font-size:13px;color:#ddd;margin-bottom:14px;font-family:'JetBrains Mono',monospace;letter-spacing:1.5px;}
+  footer p, footer a{color:var(--text-mute);font-size:12.5px;}
+  footer ul{list-style:none;padding:0;margin:0;display:grid;gap:9px;}
+  footer a:hover{color:var(--rust);}
+  .social-row{display:flex;gap:10px;margin-top:14px;}
+  .social-row a{
+    width:34px;height:34px;border:1px solid var(--border);border-radius:6px;
+    display:flex;align-items:center;justify-content:center;color:var(--text-soft);
+  }
+  .social-row a:hover{border-color:var(--rust);color:var(--rust);}
+  .footer-bottom{
+    max-width:1160px;margin:44px auto 0;padding:20px 28px 0;border-top:1px solid var(--border-soft);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-mute);
+  }
+
+  .cta-band{
+    border:1px solid var(--border);border-radius:8px;padding:34px 36px;
+    background:linear-gradient(120deg, rgba(187,68,0,.05), rgba(0,168,192,.05));
+    display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  }
+  .cta-band h3{font-size:20px;margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="nav-inner">
+    <div class="brand" onclick="showView('home')">
+      <div class="mark">P</div>
+      <div class="name">PANDU</div>
+    </div>
+    <button class="nav-toggle" onclick="document.querySelector('nav.tabs').classList.toggle('open')">&#9776;</button>
+    <nav class="tabs">
+      <button data-view="home" class="active" onclick="showView('home')">Home</button>
+      <button data-view="home" onclick="showView('home','#progress')">Progress</button>
+      <button data-view="home" onclick="showView('home','#potential')">Potential</button>
+      <button data-view="recommendations" onclick="showView('recommendations')">Recommendations</button>
+      <button data-view="donate" onclick="showView('donate')">Donate Data</button>
+      <button data-view="blog" onclick="showView('blog')">Blog</button>
+      <button data-view="contributors" onclick="showView('contributors')">Contributors</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================ HOME ============================================================ -->
+<section class="view active" id="view-home">
+
+  <div class="hero">
+    <!-- Raw glyph stream background behind the workspace header elements -->
+    <div class="hero-frieze-bg">
+      <div class="frieze-row r1" id="bg-row1"></div>
+      <div class="frieze-row r2" id="bg-row2"></div>
+      <div class="frieze-row r3" id="bg-row3"></div>
+    </div>
+    
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow rust">Intelligent Computational Archaeological Workspace</span>
+        <h1>Structured analysis for the study of evolving writing systems</h1>
+        <p class="lede">Pandu is a research workspace for studying how ancient writing systems change shape across time, region, and material &mdash; turning scattered inscriptions into structured, comparable, AI-assisted data.</p>
+        <div class="hero-ctas">
+          <button class="btn primary" onclick="showView('donate')">Donate Data</button>
+          <button class="btn" style="border-color:#fff;color:#fff;background:transparent;" onclick="window.open('https://github.com/ahmednirjhor29-stack/Pandu/releases','_blank')">Download Pandu for Linux</button>
+          <button class="btn cyan" onclick="showView('home','#why')">Why It Matters</button>
+          <button class="btn" onclick="showView('blog')">Read the Build Log</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY PANDU -->
+  <section class="tight" id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow rust">The Problem</span>
+        <h2>Scripts don't disappear all at once. They erode, letter by letter.</h2>
+        <p>A cuneiform wedge, a Brahmi curve, a Phoenician stroke &mdash; each one drifts slightly with every century, region, and surface it's carved or written on. Epigraphists have always tracked this by eye. Pandu tracks it geometrically, so the drift becomes measurable instead of anecdotal.</p>
+      </div>
+      <div class="grid-3">
+        <div class="feat">
+          <div class="icon" style="border-color:var(--rust-dim);color:var(--rust);">01</div>
+          <h3>Fragmented records</h3>
+          <p>Photographs, rubbings, and transcriptions of the same script sit in disconnected museum archives, personal folders, and unindexed papers &mdash; rarely in a form that can be compared side by side.</p>
+        </div>
+        <div class="feat">
+          <div class="icon" style="border-color:var(--cyan-dim);color:var(--cyan);">02</div>
+          <h3>No shared geometry</h3>
+          <p>There's no common language for describing how a letterform bends, simplifies, or rotates as it moves between scripts and periods &mdash; the kind of description a classifier could actually learn from.</p>
+        </div>
+        <div class="feat">
+          <div class="icon" style="border-color:var(--moss-dim);color:var(--moss);">03</div>
+          <h3>Expertise doesn't scale</h3>
+          <p>Reading an unfamiliar script well takes years of training. Pandu won't replace that expertise &mdash; it exists to extend it, by handling the first pass across large volumes of material.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THEME / APPROACH -->
+  <section class="tight">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow cyan">The Approach</span>
+        <h2>Geometry first, language models second.</h2>
+        <p>Pandu treats a letterform as a shape before it treats it as a symbol. Contour analysis, Procrustes alignment, Fourier descriptors, Hu moments, and PCA give it a way to describe <em>how</em> a glyph is shaped &mdash; before any AI model is asked to guess <em>what</em> it means.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card cyan">
+          <span class="eyebrow cyan">Local + Cloud, by choice</span>
+          <h3>Run it offline, or bring your own model</h3>
+          <p>Pandu talks to a local Ollama instance for fully offline analysis, or to Gemini, OpenAI, Anthropic, and Mistral when cloud reasoning is preferred &mdash; the researcher decides where their data goes, per session.</p>
+        </div>
+        <div class="card moss">
+          <span class="eyebrow moss">Structured, not just chatted</span>
+          <h3>Every finding lands in a database</h3>
+          <p>Transcriptions, translations, confidence scores, and letterform notes are written straight into a queryable library &mdash; not lost at the bottom of a chat window.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOCKUP SHOWCASE -->
+  <section class="tight">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow violet">Inside the Workspace</span>
+        <h2>A dark, instrument-panel interface built for long analysis sessions</h2>
+        <p>The desktop application is organised into focused pages &mdash; Data Entry, Library, AI Analysis, AI Database, Train, and Script Analysis &mdash; each colour-coded so the researcher always knows which layer of the pipeline they're in.</p>
+      </div>
+      <div class="mockup">
+        <div class="mockup-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <div class="tabs">
+            <div>Data Entry</div><div class="on">Script Analysis</div><div>AI Database</div><div>Train</div>
+          </div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-col">
+            <div class="mockup-block">
+              <span class="lbl">CONFIDENCE MATCH</span>
+              <div class="mockup-bar-chart">
+                <div class="row"><span style="width:120px;font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;">Writing System</span><div class="track"><div class="fill" style="width:88%;background:var(--cyan);"></div></div><span class="pct">88%</span></div>
+                <div class="row"><span style="width:120px;font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;">Glyph Match</span><div class="track"><div class="fill" style="width:74%;background:var(--moss);"></div></div><span class="pct">74%</span></div>
+                <div class="row"><span style="width:120px;font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;">Period Fit</span><div class="track"><div class="fill" style="width:63%;background:var(--rust);"></div></div><span class="pct">63%</span></div>
+                <div class="row"><span style="width:120px;font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;">Regional Fit</span><div class="track"><div class="fill" style="width:81%;background:var(--violet);"></div></div><span class="pct">81%</span></div>
+              </div>
+            </div>
+            <div class="mockup-block">
+              <span class="lbl">PROBABLE ATTRIBUTES</span>
+              <p style="margin:0;font-size:11.5px;color:#bbb;">Writing system: <span style="color:#eee;">Brahmi</span><br>Time period: <span style="color:#eee;">3rd c. BCE</span><br>Source: <span style="color:#eee;">Stone Tablet</span></p>
+            </div>
+          </div>
+          <div class="mockup-col mockup-chat">
+            <div class="bubble ai">Detected consistent stroke-thinning at glyph terminals &mdash; likely regional stylistic drift rather than a distinct sub-script.</div>
+            <div class="bubble user">Cross-check against the Brahmi samples from the western records.</div>
+            <div class="bubble ai">7 comparable samples found. Similarity above 0.8 for 4 of them.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section id="progress">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow rust">Progress</span>
+        <h2>From a single-purpose script viewer to a full workspace</h2>
+        <p>Pandu is being built in the open, one working feature at a time &mdash; no step skipped, nothing shipped that hasn't been run against real attempts at real scripts.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 00</div>
+          <h4>ScriptLens &mdash; the original concept</h4>
+          <p>Started as a focused research tool for studying the geometric shape of historical letterforms and tracking their transformation across time. Python, PyQt6, SQLite, OpenCV, ReportLab, Matplotlib.</p>
+        </div>
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 01</div>
+          <h4>Core data pipeline</h4>
+          <p>Drag-and-drop image ingestion, a structured Library database, and a dark, instrument-panel UI designed for long sessions rather than quick glances.</p>
+        </div>
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 02</div>
+          <h4>Renamed and re-scoped as Pandu</h4>
+          <p>Evolved into an "Intelligent Computational Archaeological Workspace" &mdash; a broader home for analysis, AI-assisted transcription, and model training, not just single-image inspection.</p>
+        </div>
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 03</div>
+          <h4>Multi-provider AI + embedded chat</h4>
+          <p>Added support for Gemini, OpenAI, Anthropic, and Mistral alongside local Ollama models, each with its own stored key and session settings &mdash; plus an inline chat interface for working through findings conversationally.</p>
+        </div>
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 04</div>
+          <h4>AI Database, DB Query mode, and Training page</h4>
+          <p>Every AI finding now lands in its own queryable database, separate from the source Library, with a dedicated Train page for running script-pattern analysis passes over selected records.</p>
+        </div>
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 05</div>
+          <h4>Script Analysis + PDF reporting</h4>
+          <p>A dedicated drag-and-drop analysis page that returns a structured translation, probable attributes, a statistical confidence chart, and a full PDF report per artifact.</p>
+        </div>
+        <div class="tl-item next">
+          <div class="tl-date">NOW</div>
+          <h4>Windows support & the dark monochrome restyle</h4>
+          <p>Currently converting Pandu to run cleanly on Windows and finishing a full UI restyle to a consistent dark monochrome theme with colour-coded borders &mdash; the same theme this website borrows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POTENTIAL -->
+  <section id="potential">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow cyan">Potential</span>
+        <h2>Where this goes if the data keeps coming</h2>
+        <p>Pandu's value compounds with every well-documented sample it sees. None of what follows works without real inscriptions, real transcriptions, and real corrections from people who know these scripts.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <span class="eyebrow moss">Curated contribution pipeline</span>
+          <h3>Community data, reviewed before it retrains anything</h3>
+          <p>User-submitted samples pass through a curation step before periodic model retraining &mdash; quality over raw volume, always.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow violet">A living reference for dying scripts</span>
+          <h3>A shared, growing map of letterform change</h3>
+          <p>Over time, a public-facing reference of how specific scripts evolved &mdash; useful to researchers, students, and museums alike.</p>
+        </div>
+      </div>
+      <div class="stat-strip" style="margin-top:26px;">
+        <div class="stat"><div class="num">0</div><div class="lbl">WRITING SYSTEMS TRACKED SO FAR</div></div>
+        <div class="stat"><div class="num">4</div><div class="lbl">CLOUD AI PROVIDERS SUPPORTED</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl">CORE WORKSPACE MODULES</div></div>
+        <div class="stat"><div class="num">1</div><div class="lbl">INDEPENDENT RESEARCHER BUILDING IT</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="wrap">
+      <div class="cta-band">
+        <div>
+          <h3>This project runs on borrowed inscriptions.</h3>
+          <p style="margin:0;max-width:520px;">If you have images, transcriptions, or translations of historical scripts &mdash; or just expertise to check our guesses &mdash; Pandu needs you more than it needs another feature.</p>
+        </div>
+        <button class="btn moss" onclick="showView('donate')">Contribute Data &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+</section>
+
+<!-- ============================================================ RECOMMENDATIONS ============================================================ -->
+<section class="view" id="view-recommendations">
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow cyan">Recommendations</span>
+        <h2>Tell us what Pandu should look at next</h2>
+        <p>Feature ideas, datasets we should chase, institutions worth partnering with, or scripts we're missing entirely &mdash; this is the open channel for shaping the roadmap.</p>
+      </div>
+
+      <div class="grid-2" style="align-items:start;">
+        <div class="card">
+          <span class="eyebrow rust">Submit a recommendation</span>
+          <form class="panel-form" id="rec-form">
+            <div class="form-row">
+              <div class="field"><label>Name</label><input type="text" required placeholder="Your name"></div>
+              <div class="field"><label>Email (optional)</label><input type="email" placeholder="you@example.com"></div>
+            </div>
+            <div class="field">
+              <label>Type</label>
+              <select id="rec-type">
+                <option value="feature">Feature idea</option>
+                <option value="dataset">Dataset to pursue</option>
+                <option value="collab">Collaboration / institution</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Your recommendation</label>
+              <textarea required placeholder="What should Pandu do, track, or connect with next?"></textarea>
+            </div>
+            <button type="submit" class="btn primary" style="justify-self:start;">Send Recommendation</button>
+            <div class="confirm-msg" id="rec-confirm">Thank you &mdash; your recommendation has been noted for review.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ============================================================ DONATE DATA ============================================================ -->
+<section class="view" id="view-donate">
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow moss">Data Donation</span>
+        <h2>Give Pandu something real to learn from</h2>
+        <p>Every donated sample is reviewed before it ever touches training. You'll always be credited for what you contribute, and nothing goes into a retraining pass without a curation pass first.</p>
+      </div>
+
+      <div class="donate-types">
+        <div class="dt"><div class="glyph">&#9672;</div><h4 style="font-size:13px;margin-bottom:4px;">Photographs</h4><p style="font-size:11.5px;margin:0;">Inscriptions, tablets, manuscripts, plates</p></div>
+        <div class="dt"><div class="glyph">&#9998;</div><h4 style="font-size:13px;margin-bottom:4px;">Transcriptions</h4><p style="font-size:11.5px;margin:0;">Text already read out of a source</p></div>
+        <div class="dt"><div class="glyph">&#8644;</div><h4 style="font-size:13px;margin-bottom:4px;">Translations</h4><p style="font-size:11.5px;margin:0;">Meaning alongside the original script</p></div>
+        <div class="dt"><div class="glyph">&#9636;</div><h4 style="font-size:13px;margin-bottom:4px;">Metadata</h4><p style="font-size:11.5px;margin:0;">Period, region, material, provenance</p></div>
+      </div>
+
+      <div class="grid-2" style="align-items:start;">
+        <div class="card moss">
+          <span class="eyebrow moss">Donate your data</span>
+          <form class="panel-form" id="donate-form">
+            <div class="form-row">
+              <div class="field"><label>Name <span class="required">*</span></label><input type="text" required placeholder="Your name"></div>
+              <div class="field"><label>Email <span class="required">*</span></label><input type="email" required placeholder="you@example.com"></div>
+            </div>
+            <div class="field">
+              <label>Data type <span class="required">*</span></label>
+              <select required>
+                <option value="">Select one&hellip;</option>
+                <option>Photograph(s) of an inscription/artifact</option>
+                <option>Transcription</option>
+                <option>Translation</option>
+                <option>Metadata / provenance notes</option>
+                <option>Mixed / other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Material <span class="required">*</span></label>
+              <select required>
+                <option value="">Select material&hellip;</option>
+                <option>Stone / Rock</option>
+                <option>Clay / Terracotta</option>
+                <option>Metal (Copper, Bronze, Iron, Gold, Silver)</option>
+                <option>Papyrus / Paper</option>
+                <option>Parchment / Vellum</option>
+                <option>Wood / Bamboo</option>
+                <option>Bone / Ivory</option>
+                <option>Glass</option>
+                <option>Textile</option>
+                <option>Plaster / Fresco</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Probable Writing System <span class="required">*</span></label>
+              <input type="text" required placeholder="e.g. Brahmi, Cuneiform, Phoenician, Devanagari&hellip;">
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label>Translation <span class="required">*</span></label>
+                <textarea required placeholder="Provide the translation of the text if known&hellip;" style="min-height:70px;"></textarea>
+              </div>
+              <div class="field">
+                <label>Time Period <span class="required">*</span></label>
+                <input type="text" required placeholder="e.g. 3rd c. BCE, Gupta period, 12th c. CE&hellip;">
+              </div>
+            </div>
+            <div class="field">
+              <label>Describe what you're offering</label>
+              <textarea placeholder="Additional context, condition, how it was acquired, any rights or permissions we should know about&hellip;"></textarea>
+            </div>
+            <div class="field">
+              <label>Attach files (optional &mdash; we'll follow up for secure transfer if needed)</label>
+              <input type="file" multiple>
+            </div>
+            <p class="form-note">Fields marked with <span class="required">*</span> are required. We only follow up by email. Nothing you attach here is uploaded automatically until we confirm details with you.</p>
+            <button type="submit" class="btn moss" style="justify-self:start;">Submit Donation</button>
+            <div class="confirm-msg" id="donate-confirm">Thank you &mdash; we've logged your submission and will follow up by email with next steps.</div>
+          </form>
+        </div>
+
+        <div class="card">
+          <span class="eyebrow cyan">How donated data is used</span>
+          <div class="qa">
+            <div><div class="q">DOES MY DATA GET USED IMMEDIATELY?</div><p style="margin:0;">No. Every submission is reviewed for quality and provenance before it's added to any training set.</p></div>
+            <div><div class="q">DO I RETAIN CREDIT?</div><p style="margin:0;">Yes &mdash; contributors are credited in the project's records unless you ask to remain anonymous.</p></div>
+            <div><div class="q">WHAT IF I ONLY HAVE EXPERTISE, NOT IMAGES?</div><p style="margin:0;">That counts too. Corrections to existing transcriptions and translations are just as valuable as new material.</p></div>
+            <div><div class="q">WHO OWNS THE RIGHTS TO WHAT I SEND?</div><p style="margin:0;">You do. We'll always confirm usage rights with you directly before anything is incorporated.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ============================================================ BLOG ============================================================ -->
+<section class="view" id="view-blog">
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow violet">Build Log</span>
+        <h2>Notes from the workbench</h2>
+        <p>Progress updates, design decisions, and the occasional dead end &mdash; written as they happen. Comments are open on every post.</p>
+      </div>
+
+      <div id="blog-posts">
+
+        <article class="post" data-post="1">
+          <div class="post-head" onclick="togglePost(this)">
+            <div class="meta"><span>04 Jul 2026</span><span>UI / Windows</span></div>
+            <h3>Restyling Pandu into a dark monochrome instrument panel</h3>
+            <p class="post-excerpt">Why the interface is moving away from mixed accent colours toward a disciplined dark monochrome base with colour-coded borders &mdash; and what that's forcing me to fix along the way.</p>
+          </div>
+          <span class="post-toggle">Read full post + comments &darr;</span>
+          <div class="post-body">
+            <p>The earlier interface worked, but it didn't yet look like a single tool &mdash; different pages had drifted into different visual habits. The current pass standardises everything onto one dark base (#070707 background, #0d0d0d cards) and uses border colour, not background colour, to signal what a panel is for: rust for user actions, cyan for AI output, moss for success states, violet for reporting.</p>
+            <p>Alongside the restyle, I'm working through the Windows port &mdash; mostly path handling and a couple of Qt behaviours that differ from Linux Mint, where the app has lived so far.</p>
+            <h4>What's next</h4>
+            <p>Finishing the restyle across the Train and Script Analysis pages, then a proper pass at packaging for Windows so it's not just "runs on my machine."</p>
+            <div class="comments">
+              <span class="eyebrow violet">Comments</span>
+              <div class="comment-thread">
+                <div class="comment"><span class="who">M. Rahman</span><span class="when">2 days ago</span><p>The colour-coded border idea is genuinely useful once you've got six tabs open &mdash; makes it much easier to know where you are at a glance.</p></div>
+              </div>
+              <form class="comment-form" onsubmit="return addComment(event, this)">
+                <div class="form-row">
+                  <input type="text" placeholder="Name" required>
+                  <input type="email" placeholder="Email (not shown publicly)">
+                </div>
+                <textarea placeholder="Add a comment&hellip;" required></textarea>
+                <button type="submit" class="btn violet" style="justify-self:start;">Post Comment</button>
+              </form>
+            </div>
+          </div>
+        </article>
+
+        <article class="post" data-post="2">
+          <div class="post-head" onclick="togglePost(this)">
+            <div class="meta"><span>21 Jun 2026</span><span>AI Pipeline</span></div>
+            <h3>Four cloud providers, one settings panel</h3>
+            <p class="post-excerpt">Adding Gemini, OpenAI, Anthropic, and Mistral support alongside local Ollama models &mdash; and why per-provider key storage mattered more than model choice.</p>
+          </div>
+          <span class="post-toggle">Read full post + comments &darr;</span>
+          <div class="post-body">
+            <p>The point of supporting multiple providers isn't to chase whichever model is fastest this month &mdash; it's so a researcher can pick based on what they're comfortable sending off-device, session by session. Local Ollama models stay fully offline; cloud providers are opt-in per analysis, with a clear warning before any image leaves the machine.</p>
+            <p>Persistent session settings and per-provider API key storage turned out to be the unglamorous but essential part of this &mdash; nobody wants to re-enter a key every time they switch models.</p>
+            <div class="comments">
+              <span class="eyebrow violet">Comments</span>
+              <div class="comment-thread">
+                <div class="comment"><span class="who">S. Chowdhury</span><span class="when">a week ago</span><p>Appreciate the explicit warning before cloud upload &mdash; that's not a given in most research tools.</p></div>
+                <div class="comment"><span class="who">anon</span><span class="when">a week ago</span><p>Any plan to support a fully local embedding-based similarity search, without needing a chat model at all?</p></div>
+              </div>
+              <form class="comment-form" onsubmit="return addComment(event, this)">
+                <div class="form-row">
+                  <input type="text" placeholder="Name" required>
+                  <input type="email" placeholder="Email (not shown publicly)">
+                </div>
+                <textarea placeholder="Add a comment&hellip;" required></textarea>
+                <button type="submit" class="btn violet" style="justify-self:start;">Post Comment</button>
+              </form>
+            </div>
+          </div>
+        </article>
+
+        <article class="post" data-post="3">
+          <div class="post-head" onclick="togglePost(this)">
+            <div class="meta"><span>09 Jun 2026</span><span>Origins</span></div>
+            <h3>Why I started building ScriptLens</h3>
+            <p class="post-excerpt">The original scope, before it became Pandu: a focused tool for studying the geometric shape of historical scripts and how their letterforms change.</p>
+          </div>
+          <span class="post-toggle">Read full post + comments &darr;</span>
+          <div class="post-body">
+            <p>The starting question was narrow on purpose: could the shape of a letter, described mathematically, tell us something a purely textual comparison couldn't? That led straight to Procrustes analysis, Fourier descriptors, and Hu moments &mdash; tools built for shape comparison in completely unrelated fields, repurposed here for palaeography.</p>
+            <p>ScriptLens began as exactly that: a research tool, not a product. Everything that came after &mdash; the AI integration, the databases, the training pipeline &mdash; grew out of needing a place to actually store and act on what that geometric analysis found.</p>
+            <div class="comments">
+              <span class="eyebrow violet">Comments</span>
+              <div class="comment-thread"></div>
+              <form class="comment-form" onsubmit="return addComment(event, this)">
+                <div class="form-row">
+                  <input type="text" placeholder="Name" required>
+                  <input type="email" placeholder="Email (not shown publicly)">
+                </div>
+                <textarea placeholder="Add a comment&hellip;" required></textarea>
+                <button type="submit" class="btn violet" style="justify-self:start;">Post Comment</button>
+              </form>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ============================================================ CONTRIBUTORS ============================================================ -->
+<section class="view" id="view-contributors">
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow violet">Contributors</span>
+        <h2>People who make Pandu possible</h2>
+        <p>Every inscription, transcription, translation, and correction comes from someone who chose to share what they know. This page exists to name them.</p>
+      </div>
+      <div class="contributor-grid" id="contributor-grid">
+        <div class="contributor-card">
+          <div class="avatar">S</div>
+          <h4>Shah Aziz Ahmed</h4>
+          <p>Creator & lead developer</p>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:32px;color:var(--text-mute);font-size:13px;">If you've contributed data, expertise, or corrections and would like to be listed here, <a href="#" onclick="showView('donate');return false;" style="color:var(--cyan);">reach out through the donation form</a>.</p>
+    </div>
+  </section>
+</section>
+
+</main>
+
+<!-- ============================================================ FOOTER (contact + social, always visible) ============================================================ -->
+<footer id="contact-form">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>GET IN TOUCH</h4>
+        <p style="max-width:340px;margin-bottom:16px;">Questions, partnership ideas, or something to donate &mdash; a short message is the fastest way to reach the project directly.</p>
+        <form class="panel-form" id="contact-form-el" style="max-width:380px;">
+          <div class="field"><input type="text" required placeholder="Your name"></div>
+          <div class="field"><input type="email" required placeholder="you@example.com"></div>
+          <div class="field"><textarea required placeholder="Your message" style="min-height:70px;"></textarea></div>
+          <button type="submit" class="btn cyan" style="justify-self:start;">Send Message</button>
+          <div class="confirm-msg" id="contact-confirm">Thanks for reaching out &mdash; this has been sent.</div>
+        </form>
+      </div>
+      <div>
+        <h4>PROJECT</h4>
+        <ul>
+          <li><a href="#" onclick="showView('home');return false;">Home</a></li>
+          <li><a href="#" onclick="showView('home','#progress');return false;">Progress</a></li>
+          <li><a href="#" onclick="showView('home','#potential');return false;">Potential</a></li>
+          <li><a href="#" onclick="showView('blog');return false;">Build Log</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>COMMUNITY</h4>
+        <ul>
+          <li><a href="#" onclick="showView('recommendations');return false;">Recommendations</a></li>
+          <li><a href="#" onclick="showView('donate');return false;">Donate Data</a></li>
+          <li><a href="#" onclick="showView('contributors');return false;">Contributors</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>ELSEWHERE</h4>
+        <p style="margin-bottom:6px;">panduforall.free@gmail.com</p>
+        <div class="social-row">
+          <a href="https://github.com/ahmednirjhor29-stack/Pandu" title="GitHub" aria-label="GitHub" target="_blank">GH</a>
+          <a href="#" title="X / Twitter" aria-label="X">X</a>
+          <a href="#" title="LinkedIn" aria-label="LinkedIn">in</a>
+          <a href="#" title="Instagram" aria-label="Instagram">IG</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Pandu &mdash; Intelligent Computational Archaeological Workspace</span>
+    <span>Built independently, one script at a time.</span>
+  </div>
+</footer>
+
+<script>
+  // ---------- view switching ----------
+  function showView(name, anchor){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+name).classList.add('active');
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('nav.tabs button[data-view="'+name+'"]').forEach(b=>b.classList.add('active'));
+    document.querySelector('nav.tabs').classList.remove('open');
+    window.scrollTo({top:0,behavior:'instant' in window ? 'instant' : 'auto'});
+    if(anchor){
+      setTimeout(()=>{
+        const el = document.querySelector(anchor);
+        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      },60);
+    }
+  }
+
+  // ---------- glyph frieze content ----------
+  // Built from numeric Unicode code points (not pasted literal characters) so the file
+  // stays plain ASCII on disk and can't be mangled by an editor's save encoding.
+  function codeRange(start, count){
+    const out = [];
+    for(let i=0;i<count;i++){ out.push(String.fromCodePoint(start+i)); }
+    return out;
+  }
+  const cuneiform  = codeRange(0x12000, 16); // Cuneiform block
+  const brahmi     = codeRange(0x11005, 10).concat(codeRange(0x11013, 5)); // Brahmi block
+  const phoenician = codeRange(0x10900, 14); // Phoenician block
+
+  function buildRow(el, chars, highlightEvery){
+    if(!el) return;
+    let out = "";
+    const full = chars.concat(chars).concat(chars).concat(chars);
+    full.forEach((c,i)=>{
+      out += '<span class="marker'+(i%highlightEvery===0?' hi':'')+'">'+c+'</span>';
+    });
+    el.innerHTML = out + out; // duplicate for seamless loop
+  }
+  
+  // Build background frieze rows
+  buildRow(document.getElementById('bg-row1'), cuneiform, 5);
+  buildRow(document.getElementById('bg-row2'), brahmi, 7);
+  buildRow(document.getElementById('bg-row3'), phoenician, 6);
+
+  // ---------- blog post expand/collapse ----------
+  function togglePost(headEl){
+    headEl.parentElement.classList.toggle('open');
+  }
+
+  // ---------- comments (in-memory only for this preview build) ----------
+  function addComment(evt, formEl){
+    evt.preventDefault();
+    const inputs = formEl.querySelectorAll('input, textarea');
+    const name = inputs[0].value.trim() || "Anonymous";
+    const message = inputs[2].value.trim();
+    if(!message) return false;
+    const thread = formEl.parentElement.querySelector('.comment-thread');
+    const div = document.createElement('div');
+    div.className = 'comment';
+    div.innerHTML = '<span class="who">'+escapeHtml(name)+'</span><span class="when">just now</span><p>'+escapeHtml(message)+'</p>';
+    thread.appendChild(div);
+    formEl.reset();
+    return false;
+  }
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.innerText = str;
+    return d.innerHTML;
+  }
+
+  // ---------- simple form confirmations (static site &mdash; no backend attached yet) ----------
+  function wireConfirm(formId, confirmId, extra){
+    const form = document.getElementById(formId);
+    if(!form) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if(extra) extra(form);
+      document.getElementById(confirmId).classList.add('show');
+      form.reset();
+    });
+  }
+  wireConfirm('rec-form','rec-confirm');
+  wireConfirm('donate-form','donate-confirm');
+  wireConfirm('contact-form-el','contact-confirm');
+</script>
+
+</body>
+</html>
