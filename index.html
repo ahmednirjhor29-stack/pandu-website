@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pandu &mdash; Intelligent Computational Archaeological Workspace</title>
+<title>Pandu - Intelligent Computational Workspace</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+Cuneiform&family=Noto+Sans+Old+Persian&family=Noto+Sans+Brahmi&family=Noto+Sans+Phoenician&family=Noto+Sans+Old+Italic&family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+Cuneiform&family=Noto+Sans+Old+Persian&family=Noto+Sans+Brahmi&family=Noto+Sans+Phoenician&family=Noto+Sans+Old+Italic&family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#070707;
@@ -41,7 +41,7 @@
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3,h4{
-    font-family:'Spectral',serif;
+    font-family:'Sora',sans-serif;
     font-weight:600;
     color:#f3f3f3;
     margin:0 0 .5em 0;
@@ -84,11 +84,10 @@
     height:64px;
   }
   .brand{display:flex;align-items:center;gap:10px;cursor:pointer;}
-  .brand .mark{
+  .brand .logo{
     width:30px;height:30px;border-radius:6px;
     border:1px solid var(--rust);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Spectral',serif;font-weight:700;color:var(--rust);font-size:15px;
+    object-fit:cover;
     background:#120a06;
   }
   .brand .name{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:2px;font-size:14px;color:#eee;}
@@ -147,7 +146,7 @@
   .btn.moss{background:#081b0d;border-color:var(--moss);color:var(--moss);}
   .btn.violet{background:#14081a;border-color:var(--violet);color:var(--violet);}
 
-  /* glyph frieze &mdash; signature element */
+  /* glyph frieze - signature element */
   .frieze{
     position:relative;height:260px;border:1px solid var(--border);border-radius:8px;
     background:
@@ -266,7 +265,7 @@
   .stat-strip{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
   .stat-strip .stat{flex:1;padding:22px 20px;border-right:1px solid var(--border);}
   .stat-strip .stat:last-child{border-right:none;}
-  .stat-strip .stat .num{font-family:'Spectral',serif;font-size:28px;color:#eee;font-weight:600;}
+  .stat-strip .stat .num{font-family:'Sora',sans-serif;font-size:28px;color:#eee;font-weight:600;}
   .stat-strip .stat .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);letter-spacing:1px;margin-top:4px;}
   @media (max-width:760px){.stat-strip{flex-direction:column;}.stat-strip .stat{border-right:none;border-bottom:1px solid var(--border);}}
 
@@ -299,6 +298,14 @@
   .tag.collab{color:var(--violet);border-color:var(--violet-dim);}
   .tag.other{color:var(--rust);border-color:var(--rust-dim);}
   .rec-list{display:grid;gap:12px;margin-top:26px;}
+
+  /* upvote/downvote buttons */
+  .rec-votes{display:flex;gap:8px;align-items:center;margin-top:10px;}
+  .rec-votes button{background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text-soft);cursor:pointer;padding:4px 10px;font-size:12px;font-family:'JetBrains Mono',monospace;transition:.15s;}
+  .rec-votes button:hover{border-color:var(--rust);color:var(--rust);}
+  .rec-votes button.voted-up{border-color:var(--moss);color:var(--moss);}
+  .rec-votes button.voted-down{border-color:var(--danger);color:var(--danger);}
+  .rec-votes .score{font-family:'JetBrains Mono',monospace;font-size:13px;color:#eee;min-width:24px;text-align:center;}
 
   .donate-types{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 32px;}
   @media (max-width:820px){.donate-types{grid-template-columns:repeat(2,1fr);}}
@@ -371,14 +378,14 @@
 <header class="topnav">
   <div class="nav-inner">
     <div class="brand" onclick="showView('home')">
-      <div class="mark">P</div>
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4QCuRXhpZgAASUkqAAgAAAAHABIBAwABAAAAAQAAABoBBQABAAAAYgAAABsBBQABAAAAagAAACgBAwABAAAAAgAAADEBAgANAAAAcgAAADIBAgAUAAAAgAAAAGmHBAABAAAAlAAAAAAAAABIAAAAAQAAAEgAAAABAAAAR0lNUCAyLjEwLjM2AAAyMDI2OjA3OjA0IDEzOjA4OjU0AAEAAaADAAEAAAABAAAAAAAAAP/hDM9odHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDQuNC4wLUV4aXYyIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6R0lNUD0iaHR0cDovL3d3dy5naW1wLm9yZy94bXAvIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9ImdpbXA6ZG9jaWQ6Z2ltcDozZmYzMTU3Yy05MjI0LTQwMTAtOGI0Yy0xMjRmYjYyNjNhMTAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MjRhOWZmNzktYzUxNy00YzFlLWJhYzItZGY0MTdkNzE1ZmE5IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZjczYjdkYjgtZWNlMi00OGU4LWI2ZDYtYzk0NmJkMDFkYzJjIiBkYzpGb3JtYXQ9ImltYWdlL2pwZWciIEdJTVA6QVBJPSIyLjAiIEdJTVA6UGxhdGZvcm09IkxpbnV4IiBHSU1QOlRpbWVTdGFtcD0iMTc4MzE0ODkzOTQwNDExOSIgR0lNUDpWZXJzaW9uPSIyLjEwLjM2IiB4bXA6Q3JlYXRvclRvb2w9IkdJTVAgMi4xMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyNjowNzowNFQxMzowODo1NCswNjowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjY6MDc6MDRUMTM6MDg6NTQrMDY6MDAiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6Y2hhbmdlZD0iLyIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMzY0MTcwNy03OWYwLTQzZDItOTIxOC0yNmM3ZjgyNDI4YTAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkdpbXAgMi4xMCAoTGludXgpIiBzdEV2dDp3aGVuPSIyMDI2LTA3LTA0VDEzOjA4OjU5KzA2OjAwIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8P3hwYWNrZXQgZW5kPSJ3Ij8+/+ICsElDQ19QUk9GSUxFAAEBAAACoGxjbXMEQAAAbW50clJHQiBYWVogB+oABwAEAAcACAAYYWNzcEFQUEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y1sY21zAAAAAAAAAAAAAAAAAAAAAAAAAAAA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F7Sdy9yqTGp1TSpJTTM/Jt9Cd1LXJD+4hBe0ncvcpMarVNKklNMz8m3lJ5Utcjj3EIL2k9LZ67zKTKq1TSpJTTp8m3lJ3VNckP7iEF7Sdy8ykzqtUzqCU06fJt5Sd1TXI49xCC9lO5eZSZ1WqZVJKadPk28pO6trkce4hBeyncvMqkyqtUzqSU06fJtdCd1bXI49xCC9pO5eZSZVWqaVJKKZPk2uhPKtrkce4hBe0z3LzKTKq1TWpJRTM/Jt9Cd1bXJD+4hBe0ncvMpM6rVNaklFOnybfQndU1yQ3uIQfsp3LzKTOq1TSpJRTp8m10J5UtckN7iEF7Sdy8ykzqtUzqCU06fJtdCeVLXJD+4hB+yncvMpMqrVM6glNOnybXQnlU1yQ/uIQftJ3LzKTKq1TOoJTTp8m3lJ3VNckP7iEH7Sdy3lJlVappUEpp0+Tb6E7qmuSG9xCD9pO5bykzqtU0qCU06d0qoz/AFTEubjEubjEubjEubjEubjEubjFObjEubjEubjEubjEubjFObjFObjEubjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjFObjF
       <div class="name">PANDU</div>
     </div>
     <button class="nav-toggle" onclick="document.querySelector('nav.tabs').classList.toggle('open')">&#9776;</button>
     <nav class="tabs">
       <button data-view="home" class="active" onclick="showView('home')">Home</button>
-      <button data-view="home" onclick="showView('home','#progress')">Progress</button>
-      <button data-view="home" onclick="showView('home','#potential')">Potential</button>
+      <button data-view="potential" onclick="showView('potential')">Potential</button>
+      <button data-view="progress" onclick="showView('progress')">Progress</button>
       <button data-view="recommendations" onclick="showView('recommendations')">Recommendations</button>
       <button data-view="donate" onclick="showView('donate')">Donate Data</button>
       <button data-view="blog" onclick="showView('blog')">Blog</button>
@@ -404,7 +411,7 @@
       <div>
         <span class="eyebrow rust">Intelligent Computational Archaeological Workspace</span>
         <h1>Structured analysis for the study of evolving writing systems</h1>
-        <p class="lede">Pandu is a research workspace for studying how ancient writing systems change shape across time, region, and material &mdash; turning scattered inscriptions into structured, comparable, AI-assisted data.</p>
+        <p class="lede">Pandu is a research workspace for studying how ancient writing systems change shape across time, region, and material - turning scattered inscriptions into structured, comparable, AI-assisted data.</p>
         <div class="hero-ctas">
           <button class="btn primary" onclick="showView('donate')">Donate Data</button>
           <button class="btn" style="border-color:#fff;color:#fff;background:transparent;" onclick="window.open('https://github.com/ahmednirjhor29-stack/Pandu/releases','_blank')">Download Pandu for Linux</button>
@@ -421,23 +428,23 @@
       <div class="section-head">
         <span class="eyebrow rust">The Problem</span>
         <h2>Scripts don't disappear all at once. They erode, letter by letter.</h2>
-        <p>A cuneiform wedge, a Brahmi curve, a Phoenician stroke &mdash; each one drifts slightly with every century, region, and surface it's carved or written on. Epigraphists have always tracked this by eye. Pandu tracks it geometrically, so the drift becomes measurable instead of anecdotal.</p>
+        <p>A cuneiform wedge, a Brahmi curve, a Phoenician stroke - each one drifts slightly with every century, region, and surface it's carved or written on. Epigraphists have always tracked this by eye. Pandu tracks it geometrically, so the drift becomes measurable instead of anecdotal.</p>
       </div>
       <div class="grid-3">
         <div class="feat">
           <div class="icon" style="border-color:var(--rust-dim);color:var(--rust);">01</div>
           <h3>Fragmented records</h3>
-          <p>Photographs, rubbings, and transcriptions of the same script sit in disconnected museum archives, personal folders, and unindexed papers &mdash; rarely in a form that can be compared side by side.</p>
+          <p>Photographs, rubbings, and transcriptions of the same script sit in disconnected museum archives, personal folders, and unindexed papers - rarely in a form that can be compared side by side.</p>
         </div>
         <div class="feat">
           <div class="icon" style="border-color:var(--cyan-dim);color:var(--cyan);">02</div>
           <h3>No shared geometry</h3>
-          <p>There's no common language for describing how a letterform bends, simplifies, or rotates as it moves between scripts and periods &mdash; the kind of description a classifier could actually learn from.</p>
+          <p>There's no common language for describing how a letterform bends, simplifies, or rotates as it moves between scripts and periods - the kind of description a classifier could actually learn from.</p>
         </div>
         <div class="feat">
           <div class="icon" style="border-color:var(--moss-dim);color:var(--moss);">03</div>
           <h3>Expertise doesn't scale</h3>
-          <p>Reading an unfamiliar script well takes years of training. Pandu won't replace that expertise &mdash; it exists to extend it, by handling the first pass across large volumes of material.</p>
+          <p>Reading an unfamiliar script well takes years of training. Pandu won't replace that expertise - it exists to extend it, by handling the first pass across large volumes of material.</p>
         </div>
       </div>
     </div>
@@ -449,92 +456,99 @@
       <div class="section-head">
         <span class="eyebrow cyan">The Approach</span>
         <h2>Geometry first, language models second.</h2>
-        <p>Pandu treats a letterform as a shape before it treats it as a symbol. Contour analysis, Procrustes alignment, Fourier descriptors, Hu moments, and PCA give it a way to describe <em>how</em> a glyph is shaped &mdash; before any AI model is asked to guess <em>what</em> it means.</p>
+        <p>Pandu treats a letterform as a shape before it treats it as a symbol. Contour analysis, Procrustes alignment, Fourier descriptors, Hu moments, and PCA give it a way to describe <em>how</em> a glyph is shaped - before any AI model is asked to guess <em>what</em> it means.</p>
       </div>
       <div class="grid-2">
         <div class="card cyan">
           <span class="eyebrow cyan">Local + Cloud, by choice</span>
           <h3>Run it offline, or bring your own model</h3>
-          <p>Pandu talks to a local Ollama instance for fully offline analysis, or to Gemini, OpenAI, Anthropic, and Mistral when cloud reasoning is preferred &mdash; the researcher decides where their data goes, per session.</p>
+          <p>Pandu talks to a local Ollama instance for fully offline analysis, or to Gemini, OpenAI, Anthropic, and Mistral when cloud reasoning is preferred - the researcher decides where their data goes, per session.</p>
         </div>
         <div class="card moss">
           <span class="eyebrow moss">Structured, not just chatted</span>
           <h3>Every finding lands in a database</h3>
-          <p>Transcriptions, translations, confidence scores, and letterform notes are written straight into a queryable library &mdash; not lost at the bottom of a chat window.</p>
+          <p>Transcriptions, translations, confidence scores, and letterform notes are written straight into a queryable library - not lost at the bottom of a chat window.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- MOCKUP SHOWCASE -->
-  <section class="tight">
+</section>
+
+<!-- ============================================================ POTENTIAL ============================================================ -->
+<section class="view" id="view-potential">
+  <section>
     <div class="wrap">
       <div class="section-head">
-        <span class="eyebrow violet">Inside the Workspace</span>
-        <h2>A dark, instrument-panel interface built for long analysis sessions</h2>
-        <p>The desktop application is organised into focused pages &mdash; Data Entry, Library, AI Analysis, AI Database, Train, and Script Analysis &mdash; each colour-coded so the researcher always knows which layer of the pipeline they're in.</p>
+        <span class="eyebrow cyan">Research Applications</span>
+        <h2>Built for one script, useful for the study of change itself</h2>
+        <p>Pandu treats a letterform as a measurable shape before it treats it as a symbol - and once shape becomes data, the same engine that tracks a script's drift can be pointed at almost any question where something changes gradually across time, place, and hands. Palaeography is the proving ground. It isn't the ceiling.</p>
       </div>
-      <div class="mockup">
-        <div class="mockup-bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <div class="tabs">
-            <div>Data Entry</div><div class="on">Script Analysis</div><div>AI Database</div><div>Train</div>
-          </div>
+
+      <div class="grid-2">
+
+        <div class="card rust">
+          <span class="eyebrow rust">Archaeology</span>
+          <h3>A second clock, independent of the trench</h3>
+          <p>Where stratigraphy is disturbed, missing, or contested, Pandu is designed to offer letterform geometry as an independent dating signal - and to flag inscriptions whose shape doesn't match the statistical profile of their claimed period, region, or material, surfacing candidates for forgery review, misdating, or reuse. Across sites, it can compare geometric similarity against physical distance, turning "does this script resemble a distant site more than a nearby one" into a testable question about trade and contact rather than an assumption.</p>
         </div>
-        <div class="mockup-body">
-          <div class="mockup-col">
-            <div class="mockup-block">
-              <span class="lbl">CONFIDENCE MATCH</span>
-              <div class="mockup-bar-chart">
-                <div class="row"><span style="width:120px;font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;">Writing System</span><div class="track"><div class="fill" style="width:88%;background:var(--cyan);"></div></div><span class="pct">88%</span></div>
-                <div class="row"><span style="width:120px;font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;">Glyph Match</span><div class="track"><div class="fill" style="width:74%;background:var(--moss);"></div></div><span class="pct">74%</span></div>
-                <div class="row"><span style="width:120px;font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;">Period Fit</span><div class="track"><div class="fill" style="width:63%;background:var(--rust);"></div></div><span class="pct">63%</span></div>
-                <div class="row"><span style="width:120px;font-size:10px;color:#999;font-family:'JetBrains Mono',monospace;">Regional Fit</span><div class="track"><div class="fill" style="width:81%;background:var(--violet);"></div></div><span class="pct">81%</span></div>
-              </div>
-            </div>
-            <div class="mockup-block">
-              <span class="lbl">PROBABLE ATTRIBUTES</span>
-              <p style="margin:0;font-size:11.5px;color:#bbb;">Writing system: <span style="color:#eee;">Brahmi</span><br>Time period: <span style="color:#eee;">3rd c. BCE</span><br>Source: <span style="color:#eee;">Stone Tablet</span></p>
-            </div>
-          </div>
-          <div class="mockup-col mockup-chat">
-            <div class="bubble ai">Detected consistent stroke-thinning at glyph terminals &mdash; likely regional stylistic drift rather than a distinct sub-script.</div>
-            <div class="bubble user">Cross-check against the Brahmi samples from the western records.</div>
-            <div class="bubble ai">7 comparable samples found. Similarity above 0.8 for 4 of them.</div>
-          </div>
+
+        <div class="card cyan">
+          <span class="eyebrow cyan">Script Analysis</span>
+          <h3>Testable family trees, not just narrated ones</h3>
+          <p>Pandu is built to cluster letterforms the way cladistics clusters species - giving script evolution a quantitative backbone instead of a purely argued one. The same clustering can separate true allography (the same sign, drawn differently) from genuinely distinct signs, a foundational step in decipherment work that's currently done slowly, by eye. Paired with frequency data from transcriptions, it can also test whether commonly used signs simplify faster than rare ones - a script-specific test of economy of effort in written language.</p>
         </div>
+
+        <div class="card moss">
+          <span class="eyebrow moss">Anthropology</span>
+          <h3>Reading who was writing, not just what was written</h3>
+          <p>Consistent geometric quirks can function like a scribal fingerprint - Pandu is designed to help attribute inscriptions to individual hands or training lineages, speaking directly to how craft knowledge and literacy were transmitted. Comparing monumental inscriptions against informal graffiti gives a geometric proxy for social register and access to formal training. And because standardization is measurable, a real drop in shape variance across a region can serve as physical evidence of centralized administrative or political reform - script as a signal of power, not just communication.</p>
+        </div>
+
+        <div class="card violet">
+          <span class="eyebrow violet">Toward Environmental & Cultural Context</span>
+          <h3>Context as data, not just metadata</h3>
+          <p>The next stage of Pandu's development looks beyond the artifact itself, toward the conditions that shaped it. Future versions are intended to incorporate environmental variables - material type, weathering exposure, and climate - allowing the software to help distinguish genuine linguistic evolution from simple physical decay, and eventually to model expected wear patterns as a further authenticity and dating signal. Alongside this, Pandu aims to incorporate cultural and social context - patronage, administrative reach, trade connections, and known historical events - turning site and artifact metadata into variables that can be analyzed statistically rather than only described narratively.</p>
+        </div>
+
       </div>
+
+      <div class="cta-band" style="margin-top:26px;">
+        <div>
+          <h3>None of this works without a real, diverse corpus.</h3>
+          <p style="margin:0;max-width:560px;">Every one of these directions depends on volume and variety of well-documented samples - inscriptions, transcriptions, and the environmental and social context around them. The bottleneck isn't the method. It's the data.</p>
+        </div>
+        <button class="btn violet" onclick="showView('donate')">Contribute Data &rarr;</button>
+      </div>
+
     </div>
   </section>
+</section>
 
-  <!-- PROGRESS -->
-  <section id="progress">
+<!-- ============================================================ PROGRESS ============================================================ -->
+<section class="view" id="view-progress">
+  <section>
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow rust">Progress</span>
         <h2>From a single-purpose script viewer to a full workspace</h2>
-        <p>Pandu is being built in the open, one working feature at a time &mdash; no step skipped, nothing shipped that hasn't been run against real attempts at real scripts.</p>
+        <p>Pandu is being built in the open, one working feature at a time - no step skipped, nothing shipped that hasn't been run against real attempts at real scripts.</p>
       </div>
       <div class="timeline">
         <div class="tl-item done">
-          <div class="tl-date">PHASE 00</div>
-          <h4>ScriptLens &mdash; the original concept</h4>
-          <p>Started as a focused research tool for studying the geometric shape of historical letterforms and tracking their transformation across time. Python, PyQt6, SQLite, OpenCV, ReportLab, Matplotlib.</p>
-        </div>
-        <div class="tl-item done">
           <div class="tl-date">PHASE 01</div>
           <h4>Core data pipeline</h4>
-          <p>Drag-and-drop image ingestion, a structured Library database, and a dark, instrument-panel UI designed for long sessions rather than quick glances.</p>
+          <p>Drag-and-drop image ingestion, a structured Library database, and a focused UI designed for long analysis sessions.</p>
         </div>
         <div class="tl-item done">
           <div class="tl-date">PHASE 02</div>
           <h4>Renamed and re-scoped as Pandu</h4>
-          <p>Evolved into an "Intelligent Computational Archaeological Workspace" &mdash; a broader home for analysis, AI-assisted transcription, and model training, not just single-image inspection.</p>
+          <p>Evolved into an "Intelligent Computational Archaeological Workspace" - a broader home for analysis, AI-assisted transcription, and model training, not just single-image inspection.</p>
         </div>
         <div class="tl-item done">
           <div class="tl-date">PHASE 03</div>
           <h4>Multi-provider AI + embedded chat</h4>
-          <p>Added support for Gemini, OpenAI, Anthropic, and Mistral alongside local Ollama models, each with its own stored key and session settings &mdash; plus an inline chat interface for working through findings conversationally.</p>
+          <p>Added support for Gemini, OpenAI, Anthropic, and Mistral alongside local Ollama models, each with its own stored key and session settings - plus an inline chat interface for working through findings conversationally.</p>
         </div>
         <div class="tl-item done">
           <div class="tl-date">PHASE 04</div>
@@ -548,54 +562,12 @@
         </div>
         <div class="tl-item next">
           <div class="tl-date">NOW</div>
-          <h4>Windows support & the dark monochrome restyle</h4>
-          <p>Currently converting Pandu to run cleanly on Windows and finishing a full UI restyle to a consistent dark monochrome theme with colour-coded borders &mdash; the same theme this website borrows.</p>
+          <h4>Windows support</h4>
+          <p>Currently converting Pandu to run cleanly on Windows.</p>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- POTENTIAL -->
-  <section id="potential">
-    <div class="wrap">
-      <div class="section-head">
-        <span class="eyebrow cyan">Potential</span>
-        <h2>Where this goes if the data keeps coming</h2>
-        <p>Pandu's value compounds with every well-documented sample it sees. None of what follows works without real inscriptions, real transcriptions, and real corrections from people who know these scripts.</p>
-      </div>
-      <div class="grid-3">
-        <div class="card">
-          <span class="eyebrow moss">Curated contribution pipeline</span>
-          <h3>Community data, reviewed before it retrains anything</h3>
-          <p>User-submitted samples pass through a curation step before periodic model retraining &mdash; quality over raw volume, always.</p>
-        </div>
-        <div class="card">
-          <span class="eyebrow violet">A living reference for dying scripts</span>
-          <h3>A shared, growing map of letterform change</h3>
-          <p>Over time, a public-facing reference of how specific scripts evolved &mdash; useful to researchers, students, and museums alike.</p>
-        </div>
-      </div>
-      <div class="stat-strip" style="margin-top:26px;">
-        <div class="stat"><div class="num">0</div><div class="lbl">WRITING SYSTEMS TRACKED SO FAR</div></div>
-        <div class="stat"><div class="num">4</div><div class="lbl">CLOUD AI PROVIDERS SUPPORTED</div></div>
-        <div class="stat"><div class="num">6</div><div class="lbl">CORE WORKSPACE MODULES</div></div>
-        <div class="stat"><div class="num">1</div><div class="lbl">INDEPENDENT RESEARCHER BUILDING IT</div></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="tight">
-    <div class="wrap">
-      <div class="cta-band">
-        <div>
-          <h3>This project runs on borrowed inscriptions.</h3>
-          <p style="margin:0;max-width:520px;">If you have images, transcriptions, or translations of historical scripts &mdash; or just expertise to check our guesses &mdash; Pandu needs you more than it needs another feature.</p>
-        </div>
-        <button class="btn moss" onclick="showView('donate')">Contribute Data &rarr;</button>
-      </div>
-    </div>
-  </section>
-
 </section>
 
 <!-- ============================================================ RECOMMENDATIONS ============================================================ -->
@@ -605,7 +577,7 @@
       <div class="section-head">
         <span class="eyebrow cyan">Recommendations</span>
         <h2>Tell us what Pandu should look at next</h2>
-        <p>Feature ideas, datasets we should chase, institutions worth partnering with, or scripts we're missing entirely &mdash; this is the open channel for shaping the roadmap.</p>
+        <p>Feature ideas, datasets we should chase, institutions worth partnering with, or scripts we're missing entirely - this is the open channel for shaping the roadmap.</p>
       </div>
 
       <div class="grid-2" style="align-items:start;">
@@ -613,8 +585,8 @@
           <span class="eyebrow rust">Submit a recommendation</span>
           <form class="panel-form" id="rec-form">
             <div class="form-row">
-              <div class="field"><label>Name</label><input type="text" required placeholder="Your name"></div>
-              <div class="field"><label>Email (optional)</label><input type="email" placeholder="you@example.com"></div>
+              <div class="field"><label>Name <span class="required">*</span></label><input type="text" id="rec-name" required placeholder="Your name"></div>
+              <div class="field"><label>Email (optional)</label><input type="email" id="rec-email" placeholder="you@example.com"></div>
             </div>
             <div class="field">
               <label>Type</label>
@@ -626,12 +598,20 @@
               </select>
             </div>
             <div class="field">
-              <label>Your recommendation</label>
-              <textarea required placeholder="What should Pandu do, track, or connect with next?"></textarea>
+              <label>Your recommendation <span class="required">*</span></label>
+              <textarea id="rec-text" required placeholder="What should Pandu do, track, or connect with next?"></textarea>
             </div>
             <button type="submit" class="btn primary" style="justify-self:start;">Send Recommendation</button>
-            <div class="confirm-msg" id="rec-confirm">Thank you &mdash; your recommendation has been noted for review.</div>
+            <div class="confirm-msg" id="rec-confirm">Thank you - your recommendation has been submitted and sent for review.</div>
           </form>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:18px;">
+            <span class="eyebrow cyan">Submitted Recommendations</span>
+            <p style="font-size:13px;">Upvote recommendations you support. Downvote ones you disagree with.</p>
+          </div>
+          <div id="rec-list-container" class="rec-list"></div>
         </div>
       </div>
     </div>
@@ -660,12 +640,12 @@
           <span class="eyebrow moss">Donate your data</span>
           <form class="panel-form" id="donate-form">
             <div class="form-row">
-              <div class="field"><label>Name <span class="required">*</span></label><input type="text" required placeholder="Your name"></div>
-              <div class="field"><label>Email <span class="required">*</span></label><input type="email" required placeholder="you@example.com"></div>
+              <div class="field"><label>Name <span class="required">*</span></label><input type="text" id="donate-name" required placeholder="Your name"></div>
+              <div class="field"><label>Email <span class="required">*</span></label><input type="email" id="donate-email" required placeholder="you@example.com"></div>
             </div>
             <div class="field">
               <label>Data type <span class="required">*</span></label>
-              <select required>
+              <select id="donate-type" required>
                 <option value="">Select one&hellip;</option>
                 <option>Photograph(s) of an inscription/artifact</option>
                 <option>Transcription</option>
@@ -676,7 +656,7 @@
             </div>
             <div class="field">
               <label>Material <span class="required">*</span></label>
-              <select required>
+              <select id="donate-material" required>
                 <option value="">Select material&hellip;</option>
                 <option>Stone / Rock</option>
                 <option>Clay / Terracotta</option>
@@ -693,29 +673,29 @@
             </div>
             <div class="field">
               <label>Probable Writing System <span class="required">*</span></label>
-              <input type="text" required placeholder="e.g. Brahmi, Cuneiform, Phoenician, Devanagari&hellip;">
+              <input type="text" id="donate-system" required placeholder="e.g. Brahmi, Cuneiform, Phoenician, Devanagari&hellip;">
             </div>
             <div class="form-row">
               <div class="field">
                 <label>Translation <span class="required">*</span></label>
-                <textarea required placeholder="Provide the translation of the text if known&hellip;" style="min-height:70px;"></textarea>
+                <textarea id="donate-translation" required placeholder="Provide the translation of the text if known&hellip;" style="min-height:70px;"></textarea>
               </div>
               <div class="field">
                 <label>Time Period <span class="required">*</span></label>
-                <input type="text" required placeholder="e.g. 3rd c. BCE, Gupta period, 12th c. CE&hellip;">
+                <input type="text" id="donate-period" required placeholder="e.g. 3rd c. BCE, Gupta period, 12th c. CE&hellip;">
               </div>
             </div>
             <div class="field">
               <label>Describe what you're offering</label>
-              <textarea placeholder="Additional context, condition, how it was acquired, any rights or permissions we should know about&hellip;"></textarea>
+              <textarea id="donate-desc" placeholder="Additional context, condition, how it was acquired, any rights or permissions we should know about&hellip;"></textarea>
             </div>
             <div class="field">
-              <label>Attach files (optional &mdash; we'll follow up for secure transfer if needed)</label>
+              <label>Attach files (optional - we'll follow up for secure transfer if needed)</label>
               <input type="file" multiple>
             </div>
             <p class="form-note">Fields marked with <span class="required">*</span> are required. We only follow up by email. Nothing you attach here is uploaded automatically until we confirm details with you.</p>
             <button type="submit" class="btn moss" style="justify-self:start;">Submit Donation</button>
-            <div class="confirm-msg" id="donate-confirm">Thank you &mdash; we've logged your submission and will follow up by email with next steps.</div>
+            <div class="confirm-msg" id="donate-confirm">Thank you - we've logged your submission and will follow up by email with next steps.</div>
           </form>
         </div>
 
@@ -723,7 +703,7 @@
           <span class="eyebrow cyan">How donated data is used</span>
           <div class="qa">
             <div><div class="q">DOES MY DATA GET USED IMMEDIATELY?</div><p style="margin:0;">No. Every submission is reviewed for quality and provenance before it's added to any training set.</p></div>
-            <div><div class="q">DO I RETAIN CREDIT?</div><p style="margin:0;">Yes &mdash; contributors are credited in the project's records unless you ask to remain anonymous.</p></div>
+            <div><div class="q">DO I RETAIN CREDIT?</div><p style="margin:0;">Yes - contributors are credited in the project's records unless you ask to remain anonymous.</p></div>
             <div><div class="q">WHAT IF I ONLY HAVE EXPERTISE, NOT IMAGES?</div><p style="margin:0;">That counts too. Corrections to existing transcriptions and translations are just as valuable as new material.</p></div>
             <div><div class="q">WHO OWNS THE RIGHTS TO WHAT I SEND?</div><p style="margin:0;">You do. We'll always confirm usage rights with you directly before anything is incorporated.</p></div>
           </div>
@@ -740,54 +720,25 @@
       <div class="section-head">
         <span class="eyebrow violet">Build Log</span>
         <h2>Notes from the workbench</h2>
-        <p>Progress updates, design decisions, and the occasional dead end &mdash; written as they happen. Comments are open on every post.</p>
+        <p>Progress updates, design decisions, and the occasional dead end - written as they happen. Comments are open on every post.</p>
       </div>
 
       <div id="blog-posts">
-
-        <article class="post" data-post="1">
-          <div class="post-head" onclick="togglePost(this)">
-            <div class="meta"><span>04 Jul 2026</span><span>UI / Windows</span></div>
-            <h3>Restyling Pandu into a dark monochrome instrument panel</h3>
-            <p class="post-excerpt">Why the interface is moving away from mixed accent colours toward a disciplined dark monochrome base with colour-coded borders &mdash; and what that's forcing me to fix along the way.</p>
-          </div>
-          <span class="post-toggle">Read full post + comments &darr;</span>
-          <div class="post-body">
-            <p>The earlier interface worked, but it didn't yet look like a single tool &mdash; different pages had drifted into different visual habits. The current pass standardises everything onto one dark base (#070707 background, #0d0d0d cards) and uses border colour, not background colour, to signal what a panel is for: rust for user actions, cyan for AI output, moss for success states, violet for reporting.</p>
-            <p>Alongside the restyle, I'm working through the Windows port &mdash; mostly path handling and a couple of Qt behaviours that differ from Linux Mint, where the app has lived so far.</p>
-            <h4>What's next</h4>
-            <p>Finishing the restyle across the Train and Script Analysis pages, then a proper pass at packaging for Windows so it's not just "runs on my machine."</p>
-            <div class="comments">
-              <span class="eyebrow violet">Comments</span>
-              <div class="comment-thread">
-                <div class="comment"><span class="who">M. Rahman</span><span class="when">2 days ago</span><p>The colour-coded border idea is genuinely useful once you've got six tabs open &mdash; makes it much easier to know where you are at a glance.</p></div>
-              </div>
-              <form class="comment-form" onsubmit="return addComment(event, this)">
-                <div class="form-row">
-                  <input type="text" placeholder="Name" required>
-                  <input type="email" placeholder="Email (not shown publicly)">
-                </div>
-                <textarea placeholder="Add a comment&hellip;" required></textarea>
-                <button type="submit" class="btn violet" style="justify-self:start;">Post Comment</button>
-              </form>
-            </div>
-          </div>
-        </article>
 
         <article class="post" data-post="2">
           <div class="post-head" onclick="togglePost(this)">
             <div class="meta"><span>21 Jun 2026</span><span>AI Pipeline</span></div>
             <h3>Four cloud providers, one settings panel</h3>
-            <p class="post-excerpt">Adding Gemini, OpenAI, Anthropic, and Mistral support alongside local Ollama models &mdash; and why per-provider key storage mattered more than model choice.</p>
+            <p class="post-excerpt">Adding Gemini, OpenAI, Anthropic, and Mistral support alongside local Ollama models - and why per-provider key storage mattered more than model choice.</p>
           </div>
           <span class="post-toggle">Read full post + comments &darr;</span>
           <div class="post-body">
-            <p>The point of supporting multiple providers isn't to chase whichever model is fastest this month &mdash; it's so a researcher can pick based on what they're comfortable sending off-device, session by session. Local Ollama models stay fully offline; cloud providers are opt-in per analysis, with a clear warning before any image leaves the machine.</p>
-            <p>Persistent session settings and per-provider API key storage turned out to be the unglamorous but essential part of this &mdash; nobody wants to re-enter a key every time they switch models.</p>
+            <p>The point of supporting multiple providers isn't to chase whichever model is fastest this month - it's so a researcher can pick based on what they're comfortable sending off-device, session by session. Local Ollama models stay fully offline; cloud providers are opt-in per analysis, with a clear warning before any image leaves the machine.</p>
+            <p>Persistent session settings and per-provider API key storage turned out to be the unglamorous but essential part of this - nobody wants to re-enter a key every time they switch models.</p>
             <div class="comments">
               <span class="eyebrow violet">Comments</span>
               <div class="comment-thread">
-                <div class="comment"><span class="who">S. Chowdhury</span><span class="when">a week ago</span><p>Appreciate the explicit warning before cloud upload &mdash; that's not a given in most research tools.</p></div>
+                <div class="comment"><span class="who">S. Chowdhury</span><span class="when">a week ago</span><p>Appreciate the explicit warning before cloud upload - that's not a given in most research tools.</p></div>
                 <div class="comment"><span class="who">anon</span><span class="when">a week ago</span><p>Any plan to support a fully local embedding-based similarity search, without needing a chat model at all?</p></div>
               </div>
               <form class="comment-form" onsubmit="return addComment(event, this)">
@@ -810,8 +761,8 @@
           </div>
           <span class="post-toggle">Read full post + comments &darr;</span>
           <div class="post-body">
-            <p>The starting question was narrow on purpose: could the shape of a letter, described mathematically, tell us something a purely textual comparison couldn't? That led straight to Procrustes analysis, Fourier descriptors, and Hu moments &mdash; tools built for shape comparison in completely unrelated fields, repurposed here for palaeography.</p>
-            <p>ScriptLens began as exactly that: a research tool, not a product. Everything that came after &mdash; the AI integration, the databases, the training pipeline &mdash; grew out of needing a place to actually store and act on what that geometric analysis found.</p>
+            <p>The starting question was narrow on purpose: could the shape of a letter, described mathematically, tell us something a purely textual comparison couldn't? That led straight to Procrustes analysis, Fourier descriptors, and Hu moments - tools built for shape comparison in completely unrelated fields, repurposed here for palaeography.</p>
+            <p>ScriptLens began as exactly that: a research tool, not a product. Everything that came after - the AI integration, the databases, the training pipeline - grew out of needing a place to actually store and act on what that geometric analysis found.</p>
             <div class="comments">
               <span class="eyebrow violet">Comments</span>
               <div class="comment-thread"></div>
@@ -861,21 +812,21 @@
     <div class="footer-grid">
       <div>
         <h4>GET IN TOUCH</h4>
-        <p style="max-width:340px;margin-bottom:16px;">Questions, partnership ideas, or something to donate &mdash; a short message is the fastest way to reach the project directly.</p>
+        <p style="max-width:340px;margin-bottom:16px;">Questions, partnership ideas, or something to donate - a short message is the fastest way to reach the project directly.</p>
         <form class="panel-form" id="contact-form-el" style="max-width:380px;">
-          <div class="field"><input type="text" required placeholder="Your name"></div>
-          <div class="field"><input type="email" required placeholder="you@example.com"></div>
-          <div class="field"><textarea required placeholder="Your message" style="min-height:70px;"></textarea></div>
+          <div class="field"><input type="text" id="contact-name" required placeholder="Your name"></div>
+          <div class="field"><input type="email" id="contact-email" required placeholder="you@example.com"></div>
+          <div class="field"><textarea id="contact-msg" required placeholder="Your message" style="min-height:70px;"></textarea></div>
           <button type="submit" class="btn cyan" style="justify-self:start;">Send Message</button>
-          <div class="confirm-msg" id="contact-confirm">Thanks for reaching out &mdash; this has been sent.</div>
+          <div class="confirm-msg" id="contact-confirm">Thanks for reaching out - your message has been sent.</div>
         </form>
       </div>
       <div>
         <h4>PROJECT</h4>
         <ul>
           <li><a href="#" onclick="showView('home');return false;">Home</a></li>
-          <li><a href="#" onclick="showView('home','#progress');return false;">Progress</a></li>
-          <li><a href="#" onclick="showView('home','#potential');return false;">Potential</a></li>
+          <li><a href="#" onclick="showView('progress');return false;">Progress</a></li>
+          <li><a href="#" onclick="showView('potential');return false;">Potential</a></li>
           <li><a href="#" onclick="showView('blog');return false;">Build Log</a></li>
         </ul>
       </div>
@@ -900,7 +851,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>&copy; 2026 Pandu &mdash; Intelligent Computational Archaeological Workspace</span>
+    <span>&copy; 2026 Pandu - Intelligent Computational Archaeological Workspace</span>
     <span>Built independently, one script at a time.</span>
   </div>
 </footer>
@@ -975,20 +926,151 @@
     return d.innerHTML;
   }
 
-  // ---------- simple form confirmations (static site &mdash; no backend attached yet) ----------
-  function wireConfirm(formId, confirmId, extra){
+  // ---------- email sending via mailto ----------
+  function sendByEmail(to, subject, body){
+    const mailto = 'mailto:' + encodeURIComponent(to) +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+    window.open(mailto, '_blank');
+  }
+
+  // ---------- recommendation system (localStorage + upvote/downvote) ----------
+  function getRecommendations(){
+    try {
+      return JSON.parse(localStorage.getItem('pandu_recs')) || [];
+    } catch(e) { return []; }
+  }
+
+  function saveRecommendations(recs){
+    localStorage.setItem('pandu_recs', JSON.stringify(recs));
+  }
+
+  function renderRecommendations(){
+    const container = document.getElementById('rec-list-container');
+    if(!container) return;
+    const recs = getRecommendations();
+    if(recs.length === 0){
+      container.innerHTML = '<div class="rec-card" style="text-align:center;color:var(--text-mute);padding:30px;"><p style="margin:0;">No recommendations yet. Be the first to submit one!</p></div>';
+      return;
+    }
+    // Sort by score descending
+    recs.sort((a,b) => (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes));
+    container.innerHTML = recs.map((r, i) => {
+      const score = r.upvotes - r.downvotes;
+      const typeClass = r.type || 'other';
+      const dateStr = r.date || '';
+      return '<div class="rec-card" data-idx="'+i+'">' +
+        '<div class="meta"><span class="tag '+typeClass+'">'+r.type+'</span><span>'+escapeHtml(r.name)+'</span><span>'+dateStr+'</span></div>' +
+        '<p style="margin:0;font-size:14px;">'+escapeHtml(r.text)+'</p>' +
+        '<div class="rec-votes">' +
+          '<button class="vote-up" onclick="vote('+i+',1)" title="Upvote">&#9650;</button>' +
+          '<span class="score">'+score+'</span>' +
+          '<button class="vote-down" onclick="vote('+i+',-1)" title="Downvote">&#9660;</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function vote(idx, dir){
+    const recs = getRecommendations();
+    if(idx < 0 || idx >= recs.length) return;
+    const key = 'pandu_voted_' + idx;
+    const currentVote = parseInt(localStorage.getItem(key) || '0');
+    if(currentVote === dir){
+      // Un-vote
+      if(dir === 1) recs[idx].upvotes--;
+      else recs[idx].downvotes--;
+      localStorage.removeItem(key);
+    } else {
+      // Remove previous vote if any
+      if(currentVote === 1) recs[idx].upvotes--;
+      else if(currentVote === -1) recs[idx].downvotes--;
+      // Apply new vote
+      if(dir === 1) recs[idx].upvotes++;
+      else recs[idx].downvotes++;
+      localStorage.setItem(key, String(dir));
+    }
+    saveRecommendations(recs);
+    renderRecommendations();
+  }
+
+  // ---------- form handling ----------
+  function wireForm(formId, confirmId, emailSubject, getBodyFn){
     const form = document.getElementById(formId);
     if(!form) return;
     form.addEventListener('submit', function(e){
       e.preventDefault();
-      if(extra) extra(form);
+      const body = getBodyFn ? getBodyFn(form) : '';
+      if(body){
+        sendByEmail('panduforall.free@gmail.com', emailSubject, body);
+      }
       document.getElementById(confirmId).classList.add('show');
       form.reset();
     });
   }
-  wireConfirm('rec-form','rec-confirm');
-  wireConfirm('donate-form','donate-confirm');
-  wireConfirm('contact-form-el','contact-confirm');
+
+  // Recommendation form
+  wireForm('rec-form', 'rec-confirm', 'New Recommendation from Pandu Website', function(form){
+    const name = document.getElementById('rec-name').value.trim() || 'Anonymous';
+    const email = document.getElementById('rec-email').value.trim() || 'Not provided';
+    const type = document.getElementById('rec-type').value;
+    const text = document.getElementById('rec-text').value.trim();
+    
+    // Save to localStorage
+    const recs = getRecommendations();
+    recs.push({
+      name: name,
+      email: email,
+      type: type,
+      text: text,
+      date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}),
+      upvotes: 0,
+      downvotes: 0
+    });
+    saveRecommendations(recs);
+    renderRecommendations();
+
+    // Build email body
+    return 'Name: ' + name + '\n' +
+           'Email: ' + email + '\n' +
+           'Type: ' + type + '\n' +
+           'Recommendation: ' + text;
+  });
+
+  // Donate form
+  wireForm('donate-form', 'donate-confirm', 'New Data Donation from Pandu Website', function(form){
+    const name = document.getElementById('donate-name').value.trim() || 'Anonymous';
+    const email = document.getElementById('donate-email').value.trim() || 'Not provided';
+    const type = document.getElementById('donate-type').value;
+    const material = document.getElementById('donate-material').value;
+    const system = document.getElementById('donate-system').value.trim() || 'Not specified';
+    const translation = document.getElementById('donate-translation').value.trim() || 'Not provided';
+    const period = document.getElementById('donate-period').value.trim() || 'Not specified';
+    const desc = document.getElementById('donate-desc').value.trim() || 'Not provided';
+    
+    return 'Name: ' + name + '\n' +
+           'Email: ' + email + '\n' +
+           'Data Type: ' + type + '\n' +
+           'Material: ' + material + '\n' +
+           'Writing System: ' + system + '\n' +
+           'Translation: ' + translation + '\n' +
+           'Time Period: ' + period + '\n' +
+           'Description: ' + desc;
+  });
+
+  // Contact form
+  wireForm('contact-form-el', 'contact-confirm', 'New Message from Pandu Website Contact Form', function(form){
+    const name = document.getElementById('contact-name').value.trim() || 'Anonymous';
+    const email = document.getElementById('contact-email').value.trim() || 'Not provided';
+    const msg = document.getElementById('contact-msg').value.trim() || 'No message';
+    
+    return 'Name: ' + name + '\n' +
+           'Email: ' + email + '\n' +
+           'Message: ' + msg;
+  });
+
+  // Initial render of recommendations
+  renderRecommendations();
 </script>
 
 </body>
