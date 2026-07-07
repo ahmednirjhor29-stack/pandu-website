@@ -1,0 +1,7 @@
+# robots.txt for Pandu - Intelligent Computational Archaeological Workspace
+# https://panduforall.vercel.app/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://panduforall.vercel.app/sitemap.xml
