@@ -425,7 +425,6 @@
     <button class="nav-toggle" onclick="document.querySelector('nav.tabs').classList.toggle('open')">&#9776;</button>
     <nav class="tabs">
       <button data-view="home" class="active" onclick="showView('home')">Home</button>
-      <button data-view="potential" onclick="showView('home','#potential')">Potential</button>
       <button data-view="progress" onclick="showView('progress')">Progress</button>
       <button data-view="recommendations" onclick="showView('recommendations')">Recommendations</button>
       <button data-view="donate" onclick="showView('donate')">Donate Data</button>
@@ -560,15 +559,6 @@
     </div>
   </section>
 
-</section>
-
-<!-- ============================================================ POTENTIAL (now only nav target) ============================================================ -->
-<section class="view" id="view-potential">
-  <section>
-    <div class="wrap">
-      <p style="text-align:center;color:var(--text-mute);font-size:15px;">Potential is now featured on the <a href="#" onclick="showView('home');return false;" style="color:var(--cyan);">homepage</a>.</p>
-    </div>
-  </section>
 </section>
 
 <!-- ============================================================ PROGRESS ============================================================ -->
@@ -872,7 +862,6 @@
         <ul>
           <li><a href="#" onclick="showView('home');return false;">Home</a></li>
           <li><a href="#" onclick="showView('progress');return false;">Progress</a></li>
-          <li><a href="#" onclick="showView('potential');return false;">Potential</a></li>
           <li><a href="#" onclick="showView('blog');return false;">Build Log</a></li>
         </ul>
       </div>
