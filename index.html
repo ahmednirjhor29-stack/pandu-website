@@ -10,7 +10,7 @@
 <!-- Primary Meta Tags -->
 <title>Pandu - Open-Source Script Analysis & Palaeography Software for Ancient Texts</title>
 <meta name="title" content="Pandu - Open-Source Script Analysis & Palaeography Software for Ancient Texts">
-<meta name="description" content="Pandu is free open-source script analysis software for researchers in palaeography, epigraphy, and ancient text studies. Analyze inscriptions in cuneiform, Brahmi, Phoenician & more using geometric AI, Procrustes analysis & structured data tools. Paleography & language analysis for computational archaeology.">
+<meta name="description" content="Pandu is free open-source script analysis software for researchers in palaeography, epigraphy, and ancient text studies. Analyze inscriptions in cuneiform, Brahmi, Phoenician & more using the two-phase CV + geometric pipeline, AI transcription, Procrustes analysis, structured data tools, and PDF report generation. Paleography & language analysis for computational archaeology.">
 <meta name="keywords" content="script analysis, palaeography, paleography, ancient text analysis, inscription analysis, language analysis, ancient scripts, computational archaeology, cuneiform analysis, Brahmi script, Phoenician alphabet, epigraphy, AI transcription, letterform geometry, Procrustes analysis, script evolution, digital humanities, open source archaeology, ancient writing systems, archaeological software, script decipherment, paleography tool, AI archaeology, Pandu, Pandu for all, panduforall">
 <meta name="author" content="Shah Aziz Ahmed">
 <meta name="robots" content="index, follow">
@@ -23,7 +23,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://panduforall.vercel.app/">
 <meta property="og:title" content="Pandu - Open-Source Script Analysis & Palaeography Software for Ancient Texts">
-<meta property="og:description" content="Free open-source script analysis and palaeography software. Analyze ancient inscriptions, cuneiform, Brahmi, Phoenician with geometric AI, Procrustes analysis, and structured data tools for computational archaeology and language analysis.">
+<meta property="og:description" content="Free open-source script analysis and palaeography software. Analyze ancient inscriptions, cuneiform, Brahmi, Phoenician with dual-phase CV + geometric pipeline, AI transcription, Procrustes analysis, structured data tools, and PDF report generation for computational archaeology and language analysis.">
 <meta property="og:image" content="https://panduforall.vercel.app/pandu.png">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
@@ -34,7 +34,7 @@
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://panduforall.vercel.app/">
 <meta property="twitter:title" content="Pandu - Script Analysis & Palaeography Software for Ancient Texts">
-<meta property="twitter:description" content="Free open-source script analysis and palaeography software. Analyze ancient inscriptions with geometric AI and structured data tools for computational archaeology.">
+<meta property="twitter:description" content="Free open-source script analysis and palaeography software. Analyze ancient inscriptions with dual-phase CV + geometric pipeline, AI transcription, and PDF report generation for computational archaeology.">
 <meta property="twitter:image" content="https://panduforall.vercel.app/pandu.png">
 
 <!-- JSON-LD Structured Data - SoftwareApplication -->
@@ -59,8 +59,8 @@
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock"
   },
-  "keywords": "script analysis, palaeography, ancient text analysis, inscription analysis, computational archaeology, epigraphy, AI transcription, digital humanities",
-  "softwareVersion": "1.0",
+  "keywords": "script analysis, palaeography, ancient text analysis, inscription analysis, computational archaeology, epigraphy, AI transcription, digital humanities, geometric analysis, Procrustes analysis, PDF report, CV pipeline, snap-to-edge",
+  "softwareVersion": "1.8",
   "license": "https://opensource.org/licenses/MIT",
   "applicationSubCategory": "Archaeology",
   "downloadUrl": "https://github.com/ahmednirjhor29-stack/Pandu/releases"
@@ -413,14 +413,6 @@
   }
   .post-body p{margin:0 0 12px;}
   .post-body h4{font-size:14px;color:#ddd;margin:18px 0 6px;}
-  .comments{border-top:1px solid var(--border-soft);margin-top:18px;padding-top:18px;}
-  .comments .eyebrow{margin-bottom:14px;}
-  .comment{border-left:2px solid var(--border);padding:2px 0 2px 14px;margin-bottom:14px;}
-  .comment .who{font-family:'JetBrains Mono',monospace;font-size:11px;color:#cfa980;}
-  .comment .when{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-mute);margin-left:8px;}
-  .comment p{margin:4px 0 0;font-size:13px;}
-  .comment-form{display:grid;gap:10px;margin-top:16px;}
-  .comment-form .form-row{grid-template-columns:1fr 1fr;}
 
   .qa{display:grid;gap:16px;margin-top:30px;}
   .qa .q{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--cyan);letter-spacing:.5px;margin-bottom:4px;}
@@ -553,6 +545,11 @@
           <h3>Every finding lands in a database</h3>
           <p>Transcriptions, translations, confidence scores, and letterform notes are written straight into a queryable library - not lost at the bottom of a chat window.</p>
         </div>
+        <div class="card rust">
+          <span class="eyebrow rust">Two-phase pipeline</span>
+          <h3>CV cleaning + geometric skeletonization, end to end</h3>
+          <p>Every image runs through a deterministic ScientificGlyphAnalyzer: Phase 1 applies adaptive thresholding, CLAHE, morphological cleaning, and connected-component segmentation. Phase 2 computes medial axis skeletons, junction/endpoint topology, Procrustes alignment, Hausdorff distances, and structural complexity scores - all before any AI model touches the result.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -641,6 +638,11 @@
           <div class="tl-date">PHASE 05</div>
           <h4>Script Analysis + PDF reporting</h4>
           <p>A dedicated drag-and-drop analysis page that returns a structured translation, probable attributes, a statistical confidence chart, and a full PDF report per artifact.</p>
+        </div>
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 06</div>
+          <h4>ScientificGlyphAnalyzer — two-phase CV + geometric pipeline</h4>
+          <p>Every image now runs through a deterministic dual pipeline: Phase 1 applies CLAHE, adaptive thresholding, morphological cleaning, and connected-component segmentation. Phase 2 computes medial axis skeletons, junction/endpoint topology, Procrustes alignment, Hausdorff distances, and structural complexity scores — all before any AI model touches the result. A configurable Pipeline Settings dialog lets researchers tune CV parameters and geometric metrics per session.</p>
         </div>
         <div class="tl-item next">
           <div class="tl-date">NOW</div>
@@ -802,10 +804,37 @@
       <div class="section-head">
         <span class="eyebrow violet">Build Log</span>
         <h2>Notes from the workbench</h2>
-        <p>Progress updates, design decisions, and the occasional dead end - written as they happen. Comments are open on every post.</p>
+        <p>Progress updates, design decisions, and the occasional dead end - written as they happen.</p>
       </div>
 
       <div id="blog-posts">
+
+        <article class="post" data-post="4">
+          <div class="post-head" onclick="togglePost(this)">
+            <div class="meta"><span>08 Jul 2026</span><span>Script Analysis</span></div>
+            <h3>Script Analysis page, PDF reports, and the ScientificGlyphAnalyzer</h3>
+            <p class="post-excerpt">A dedicated drag-and-drop analysis page with structured translation output, PDF report generation, and a two-phase computer vision + geometric analysis pipeline running deterministically on every image.</p>
+          </div>
+          <span class="post-toggle">Read full post &darr;</span>
+          <div class="post-body">
+            <p>Up until recently, running Pandu's analysis pipeline meant working through the library - selecting an artifact, choosing an AI model, and reading the result in the embedded chat. That workflow made sense for deep investigation of cataloged items, but it didn't match the way most researchers actually encounter new material: a photograph arrives, and the first question is simply "what am I looking at?"</p>
+
+            <p>The Script Analysis page is built for exactly that moment. Drag an image onto the drop zone, optionally specify the writing system, and click Analyse. The result is structured into sections - translation, probable name, writing system, time period, region, source - each parsed from the model's output and displayed in dedicated fields. A confidence bar chart shows the model's match percentages across five dimensions, and the full AI reasoning is preserved.</p>
+
+            <h4>PDF report generation</h4>
+            <p>Every analysis can be exported as a PDF report via the fpdf2 library. The report includes the translation, all probable attributes, the statistical breakdown as visual bar widths, and the complete AI decision explanation. The filename is timestamped, and the save dialog defaults to the home directory for quick access. This closes the loop between analysis and publication - a researcher can go from a raw photograph to a formatted report in one session, without copying text between applications.</p>
+
+            <h4>The ScientificGlyphAnalyzer</h4>
+            <p>Running parallel to every AI analysis is a fully deterministic two-phase pipeline that measures the geometry of every glyph in the image:</p>
+            <p><b>Phase 1 (CV Layer):</b> Converts to grayscale, applies CLAHE for adaptive contrast, runs Gaussian adaptive thresholding, morphological closing to heal broken strokes, opening to remove noise speckles, and connected-component analysis to segment individual glyphs. Each glyph is extracted as a sub-image with its bounding box, contour, aspect ratio, and solidity.</p>
+            <p><b>Phase 2 (Geometric Layer):</b> Every segmented glyph is skeletonized via the medial axis transform, producing a 1-pixel-wide representation of the scribe's stroke pattern. The skeleton is pruned of short noise branches, then analyzed for junction points (3+ converging strokes), endpoints (stroke terminals), and branch topology. Stroke angles and lengths are computed, and per-glyph complexity, elongation, and compactness scores are derived. The overall report aggregates glyph counts, junction-to-endpoint ratios, branches per glyph, and average stroke statistics.</p>
+            <p>For any pair of glyphs, the analyzer can compute Hausdorff distance, Procrustes alignment disparity, skeleton overlap coefficient, and a weighted overall similarity score - giving researchers a quantitative basis for comparing letterforms across artifacts, periods, and regions.</p>
+
+            <h4>Snap-to-screen-edge window management</h4>
+            <p>A smaller but noticeable quality-of-life addition: dragging the window title bar near the top or side edges of the screen now triggers snap-to-side behavior (left half, right half, or full screen) with a detach button to restore the previous geometry.</p>
+
+          </div>
+        </article>
 
         <article class="post" data-post="2">
           <div class="post-head" onclick="togglePost(this)">
@@ -813,25 +842,10 @@
             <h3>Four cloud providers, one settings panel</h3>
             <p class="post-excerpt">Adding Gemini, OpenAI, Anthropic, and Mistral support alongside local Ollama models - and why per-provider key storage mattered more than model choice.</p>
           </div>
-          <span class="post-toggle">Read full post + comments &darr;</span>
+          <span class="post-toggle">Read full post &darr;</span>
           <div class="post-body">
             <p>The point of supporting multiple providers isn't to chase whichever model is fastest this month - it's so a researcher can pick based on what they're comfortable sending off-device, session by session. Local Ollama models stay fully offline; cloud providers are opt-in per analysis, with a clear warning before any image leaves the machine.</p>
             <p>Persistent session settings and per-provider API key storage turned out to be the unglamorous but essential part of this - nobody wants to re-enter a key every time they switch models.</p>
-            <div class="comments">
-              <span class="eyebrow violet">Comments</span>
-              <div class="comment-thread">
-                <div class="comment"><span class="who">S. Chowdhury</span><span class="when">a week ago</span><p>Appreciate the explicit warning before cloud upload - that's not a given in most research tools.</p></div>
-                <div class="comment"><span class="who">anon</span><span class="when">a week ago</span><p>Any plan to support a fully local embedding-based similarity search, without needing a chat model at all?</p></div>
-              </div>
-              <form class="comment-form" onsubmit="return addComment(event, this)">
-                <div class="form-row">
-                  <input type="text" placeholder="Name" required>
-                  <input type="email" placeholder="Email (not shown publicly)">
-                </div>
-                <textarea placeholder="Add a comment&hellip;" required></textarea>
-                <button type="submit" class="btn violet" style="justify-self:start;">Post Comment</button>
-              </form>
-            </div>
           </div>
         </article>
 
@@ -841,22 +855,10 @@
             <h3>Why I started building ScriptLens</h3>
             <p class="post-excerpt">The original scope, before it became Pandu: a focused tool for studying the geometric shape of historical scripts and how their letterforms change.</p>
           </div>
-          <span class="post-toggle">Read full post + comments &darr;</span>
+          <span class="post-toggle">Read full post &darr;</span>
           <div class="post-body">
             <p>The starting question was narrow on purpose: could the shape of a letter, described mathematically, tell us something a purely textual comparison couldn't? That led straight to Procrustes analysis, Fourier descriptors, and Hu moments - tools built for shape comparison in completely unrelated fields, repurposed here for palaeography.</p>
             <p>ScriptLens began as exactly that: a research tool, not a product. Everything that came after - the AI integration, the databases, the training pipeline - grew out of needing a place to actually store and act on what that geometric analysis found.</p>
-            <div class="comments">
-              <span class="eyebrow violet">Comments</span>
-              <div class="comment-thread"></div>
-              <form class="comment-form" onsubmit="return addComment(event, this)">
-                <div class="form-row">
-                  <input type="text" placeholder="Name" required>
-                  <input type="email" placeholder="Email (not shown publicly)">
-                </div>
-                <textarea placeholder="Add a comment&hellip;" required></textarea>
-                <button type="submit" class="btn violet" style="justify-self:start;">Post Comment</button>
-              </form>
-            </div>
           </div>
         </article>
 
@@ -1076,27 +1078,6 @@
   // ---------- blog post expand/collapse ----------
   function togglePost(headEl){
     headEl.parentElement.classList.toggle('open');
-  }
-
-  // ---------- comments (in-memory only for this preview build) ----------
-  function addComment(evt, formEl){
-    evt.preventDefault();
-    const inputs = formEl.querySelectorAll('input, textarea');
-    const name = inputs[0].value.trim() || "Anonymous";
-    const message = inputs[2].value.trim();
-    if(!message) return false;
-    const thread = formEl.parentElement.querySelector('.comment-thread');
-    const div = document.createElement('div');
-    div.className = 'comment';
-    div.innerHTML = '<span class="who">'+escapeHtml(name)+'</span><span class="when">just now</span><p>'+escapeHtml(message)+'</p>';
-    thread.appendChild(div);
-    formEl.reset();
-    return false;
-  }
-  function escapeHtml(str){
-    const d = document.createElement('div');
-    d.innerText = str;
-    return d.innerHTML;
   }
 
   // ---------- email sending via mailto ----------
