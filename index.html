@@ -550,6 +550,11 @@
           <h3>CV cleaning + geometric skeletonization, end to end</h3>
           <p>Every image runs through a deterministic ScientificGlyphAnalyzer: Phase 1 applies adaptive thresholding, CLAHE, morphological cleaning, and connected-component segmentation. Phase 2 computes medial axis skeletons, junction/endpoint topology, Procrustes alignment, Hausdorff distances, and structural complexity scores - all before any AI model touches the result.</p>
         </div>
+        <div class="card violet">
+          <span class="eyebrow violet">Editable vectorization + structural datasets</span>
+          <h3>Every glyph becomes an editable path with full geometry</h3>
+          <p>Post-analysis vectorization traces each detected glyph into a closed anchor-point path with Pen, Direct Select, and Delete Anchor tools. Undo/redo, keyboard nudging, and automatic-trace reset are included. Saving recalculates net area, perimeter, bounding box, anchor and mesh angles, transparent cutout, and overlay image. Glyph-level structural datasets export geometry, stroke-width, skeleton statistics, topology, moments, projection and radial profiles, Fourier descriptors, and confidence scores as reusable records.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -644,10 +649,20 @@
           <h4>ScientificGlyphAnalyzer — two-phase CV + geometric pipeline</h4>
           <p>Every image now runs through a deterministic dual pipeline: Phase 1 applies CLAHE, adaptive thresholding, morphological cleaning, and connected-component segmentation. Phase 2 computes medial axis skeletons, junction/endpoint topology, Procrustes alignment, Hausdorff distances, and structural complexity scores — all before any AI model touches the result. A configurable Pipeline Settings dialog lets researchers tune CV parameters and geometric metrics per session.</p>
         </div>
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 07</div>
+          <h4>Editable path vectorization + glyph-level structural datasets</h4>
+          <p>Every AI analysis now performs deterministic post-analysis vectorization, tracing each detected glyph into an editable closed anchor-point path with Pen, Direct Select, and Delete Anchor tools. Undo/redo, keyboard nudging, automatic-trace reset, and unsaved-change warnings are included. Saving a path recalculates its net area, perimeter, bounding box, anchor and mesh angles, transparent cutout, overlay image, and parent database totals. Original automatic paths and edit revisions are kept for audit and reset purposes. Glyph-level structural datasets are exported as reusable records with geometry, stroke-width, skeleton statistics, topology, moments, projection and radial profiles, Fourier descriptors, and confidence scores.</p>
+        </div>
+        <div class="tl-item done">
+          <div class="tl-date">PHASE 08</div>
+          <h4>Batch analysis pipeline with progress checkpointing</h4>
+          <p>Added batch analysis support for processing multiple library images in sequence, with per-image progress checkpointing that allows resuming interrupted analyses. Security warnings are shown before any data leaves the machine, and a Permission Manager handles temporary file access with automatic 5-minute revocation. A built-in terminal provides shell command execution without leaving the application.</p>
+        </div>
         <div class="tl-item next">
           <div class="tl-date">NOW</div>
-          <h4>Windows support</h4>
-          <p>Currently converting Pandu to run cleanly on Windows.</p>
+          <h4>Windows support & expanded cloud provider integration</h4>
+          <p>Currently converting Pandu to run cleanly on Windows, and extending cloud provider support beyond Gemini to include full integration with OpenAI, Anthropic, and Mistral APIs for both chat and image analysis workflows.</p>
         </div>
       </div>
     </div>
